@@ -1,0 +1,15 @@
+.sectionContainer {
+    border: 1px solid black;
+    margin: 16px 32px 16px 8px; 
+    padding: 16px 16px 16px 16px;
+    border-radius: 16px;
+}
+
+.sectionTitle {
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: white;
+    display: table;
+    margin-top: -32px;
+    margin-bottom: 16px;
+}

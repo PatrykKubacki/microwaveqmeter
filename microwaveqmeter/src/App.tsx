@@ -1,13 +1,27 @@
 import React from 'react';
+import { NavBar } from './components/Navbar';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import MainPage from './components/MainPage/MainPage';
+import SettingsPage from './components/SettingsPage/SettingsPage';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div>
+    <Router>
       <header>
-        Microwave Q-Meter
+        <NavBar />
       </header>
-    </div>
+      <div className="container">
+        <Switch>
+          <Route path="/" exact component={MainPage} />
+          <Route path="/settings" component={SettingsPage} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
