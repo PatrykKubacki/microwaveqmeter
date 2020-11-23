@@ -1,5 +1,5 @@
 import React from 'react';
-import './Section.css';
+import styles from './Section.module.css';
 
 type Props = {
     title: string;
@@ -7,8 +7,8 @@ type Props = {
 
 const Section: React.FC<Props> = ({title, children}) => {
     return (
-        <div className="sectionContainer">
-            <b className="sectionTitle">
+        <div className={styles.sectionContainer}>
+            <b className={styles.sectionTitle}>
                 {title}
             </b>
             <div>{children}</div>

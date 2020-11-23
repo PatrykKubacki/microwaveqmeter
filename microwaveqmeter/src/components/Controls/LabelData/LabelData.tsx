@@ -1,23 +1,20 @@
 import React from 'react';
-import './LabelData.css'
+import classnames from 'classnames';
+import styles from './LabelData.module.css';
 
 type Props = {
     label: string;
     value: string;
-    boldMode?: boolean;
+    bold?: boolean;
 }
 
-const LabelData: React.FC<Props> = ({label, value, boldMode}) => {
+const LabelData: React.FC<Props> = ({label, value, bold}) => {
     return (
-    boldMode ? (
-        <label className="labelData">
-            <b>{`${label}: ${value}`}</b>
-        </label>
-    ) : (
-        <label className="labelData">
+        <label className={classnames(styles.self, {
+            [styles.bold]: bold,
+        })}>
             {`${label}: ${value}`}
         </label>
-    )
     )
 } 
 

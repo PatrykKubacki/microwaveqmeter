@@ -1,20 +1,17 @@
-ul {
+.navUl {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    /* background-color: #5fb6e9; */
     background-color: #007bff;
     position: fixed;
     top: 0;
     width: 100%;
 }
 
-li {
-    float: left;
-}
 
-li a {
+.homeLink {
+    float: left;
     display: block;
     color: white;
     text-align: center;
@@ -22,10 +19,19 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+ .homeLink:hover {
     background-color: #006adb;
-  }
+  } 
 
 .settingsLink {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
     float: right;
 }  
+
+.settingsLink:hover {
+    background-color: #006adb;
+}    

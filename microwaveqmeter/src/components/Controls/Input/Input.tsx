@@ -1,5 +1,5 @@
 import React from 'react';
-import './Input.css'
+import styles from './Input.module.css'
 
 type Props = {
     label: string;
@@ -7,9 +7,9 @@ type Props = {
 
 const Input: React.FC<Props> = ({label}) => {
 return (
-    <div className="inputGroup"> 
-        <label className="inputLabel">{label}</label>
-        <input className="input" type="number" aria-label={label}/>
+    <div className={styles.inputGroup}> 
+        <label className={styles.inputLabel}>{label}</label>
+        <input className={styles.input} type="number" aria-label={label}/>
     </div>
     )
 }

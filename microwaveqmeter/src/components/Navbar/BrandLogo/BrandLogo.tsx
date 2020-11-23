@@ -1,11 +1,11 @@
 import React from 'react';
-import './BrandLogo.css';
+import styles from './BrandLogo.module.css';
 
 type Props = {
     text:string;
 }
 const BrandLogo: React.FC<Props> = ({text}) => {
-    return <b className="self">{text}</b>
+    return <b className={styles.self}>{text}</b>
 }
 
 export default BrandLogo;

@@ -17,3 +17,7 @@
 .btn:focus {
     outline: 0;
 }
+
+.btnElipsed {
+    border-radius: 2rem;
+}
