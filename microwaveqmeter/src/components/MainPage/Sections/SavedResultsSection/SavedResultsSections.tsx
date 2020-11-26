@@ -3,38 +3,14 @@ import Section from '../Section/Section';
 import { SavedResult } from '../../../../types/SavedResult';
 import SavedResults from '../../../SavedResults/SavedResults';
 
-const items: SavedResult[] = [
-    {    
-        sampleName:'Duroid 5880',
-        h: '0.508',
-        permittivity: '2.254171',
-        dielLossTangent: '9.6580E-40',
-        resistivity: '',
-        sheetResistance: '',
-        f0: '5123.960',
-        q: '9789',
-        bw: '0.5344',
-        peak: '-33.9',
-        points: '529',
-    },
-    {    sampleName:'Duroid 5880',
-        h: '0.508',
-        permittivity: '2.254171',
-        dielLossTangent: '9.6580E-40',
-        resistivity: '',
-        sheetResistance: '',
-        f0: '5123.960',
-        q: '9789',
-        bw: '0.5344',
-        peak: '-33.9',
-        points: '529',
-    }
-]
+type Props = {
+   savedResults: SavedResult[]
+}
 
-const SavedResultsSections: React.FC = () => {
+const SavedResultsSections: React.FC<Props> = ({savedResults}) => {
     return (
         <Section title={'Saved results'}>
-            <SavedResults items={items}/>
+            <SavedResults items={savedResults}/>
         </Section>
     )
 }

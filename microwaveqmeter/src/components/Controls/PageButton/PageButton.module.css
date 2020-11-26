@@ -1,0 +1,25 @@
+.self {
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    border-color: black;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.self:hover {
+    background-color: gray;
+    border-color:  gray;
+    color: black;
+}
+
+.self:focus {
+    outline: 0;
+}
+
+.active {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+

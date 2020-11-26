@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Section from '../Section/Section';
-import { Button, LabelData } from '../../../Controls';
+import { Button } from '../../../Controls';
+import { Result } from '../../../../types/Result';
+import ResultContent  from './ResultContent';
+import ResultPagesButtons from './ResultPagesButtons';
 
-const ResultSection: React.FC = () => {
+type Props = {
+    results: Result[];
+}
+
+const ResultSection: React.FC<Props> = ({results}) => {
+    const [currentResult, setCurrentResult] = useState<Result>(results[0]);
+    const [currentResultIndex, setCurrentResultIndex] = useState(0);
+
+    const handleChangeResult = (index: number) => {
+        setCurrentResult(results[index]);
+        setCurrentResultIndex(index);
+    }
+
     return (
         <Section title={'Result'}>
-            <LabelData bold label={'Q Factor'} value={'11843.3'} />
-            <LabelData bold label={'Center frequency difference'} value={'1183.3'} />
-            <LabelData label={'Center frequency [MHz]'} value={'5138.2042'} />
-            <LabelData label={'3-dB bandwidth [MHz]'} value={'0.437'} />
-            <LabelData label={'Peak transmittance [dB]'} value={'-41.6'} />
-            <LabelData label={'Number of Points'} value={'436'} /> <br/>
+            <ResultContent result={currentResult} />
+            <ResultPagesButtons 
+                currentPage={currentResultIndex} 
+                pages={results.length} 
+                onClick={handleChangeResult}/><br/><br/>
+
             <Button text={'Save'} onClick={()=>null}/>
         </Section>
     )
