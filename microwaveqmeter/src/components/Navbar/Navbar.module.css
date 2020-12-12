@@ -3,12 +3,12 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #007bff;
+    background-color: #3f51b5;
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 9999;
 }
-
 
 .homeLink {
     float: left;
@@ -20,7 +20,7 @@
 }
 
  .homeLink:hover {
-    background-color: #006adb;
+    background-color: #2d3e9c;
   } 
 
 .settingsLink {
@@ -33,5 +33,5 @@
 }  
 
 .settingsLink:hover {
-    background-color: #006adb;
+    background-color: #2d3e9c;
 }    

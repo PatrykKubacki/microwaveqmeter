@@ -1,14 +1,35 @@
 import React from 'react';
 import Section from '../Section/Section';
-import { Button, Input } from '../../../Controls';
+import { Button, TextField, Grid } from '@material-ui/core';
 
 const EmptyResonatorSection: React.FC = () => {
     return (
         <Section title={'Empty Resonator'}>
-            <Input label={'Q Factor:'}/><br/>
-            <Input label={'Center frequency [MHz]:'}/><br/>
-            <Input label={'Peak transmittance [dB]:'}/><br/><br/>
-            <Button text={'Measure the empty resonator'} onClick={()=>null}/>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField label="Q Factor" 
+                               variant="outlined" 
+                               size='small'/>
+                </Grid>  
+                <Grid item xs={12}>
+                    <TextField label="Center frequency [MHz]" 
+                               variant="outlined" 
+                               size='small'/>
+                </Grid>  
+                <Grid item xs={12}>
+                    <TextField label="Peak transmittance [dB]" 
+                               variant="outlined" 
+                               size='small'/>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button variant="contained" 
+                            color="primary" 
+                            size='large'>
+                        {'Measure the empty resonator'}
+                    </Button>
+                </Grid> 
+            </Grid>
+
     </Section>
     )
 }

@@ -1,19 +1,14 @@
 import React from 'react';
 import { SavedResult } from '../../types/SavedResult';
 import { LabelData } from '../Controls';
-import classnames from 'classnames';
-import styles from './SavedResultsContent.module.css';
 
 type Props = {
     item: SavedResult;
-    isOpen: boolean;
 }
 
-const SavedResultsContent: React.FC<Props> = ({item, isOpen}) => {
+const SavedResultsContent: React.FC<Props> = ({item}) => {
     return (
-        <div className={classnames(styles.content, {
-            [styles.isOpen]: isOpen
-        })}>
+        <div>
          <ul>
             <li>
                 <LabelData label="f0" value={item.f0}/>

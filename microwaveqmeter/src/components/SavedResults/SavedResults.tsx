@@ -1,38 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SavedResult } from '../../types/SavedResult';
-import SavedResultsHeader from './SavedResultsHeader';
+import SavedResultsHeader  from './SavedResultsHeader';
 import SavedResultsContent from './SavedResultsContent';
+import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 
 type Props = {
     items: SavedResult[];
 }
 
 const SavedResults: React.FC<Props> = ({items}) => {
-    const [openedResult, setOpenedResult] = useState(-1);
+    const [expanded, setExpanded] = React.useState('');
 
-    const handleOpenResultContent = (index: number) => {
-        if(index === openedResult) {
-            setOpenedResult(-1);
-        } else {
-            setOpenedResult(index);
-        }
-    }
-
-    const cardIsOpen = (index: number) => index === openedResult
-    
+    const handleChange = (panel: any) => (event:any, newExpanded:any) => {
+      setExpanded(newExpanded ? panel : false);
+    };
 
     return (
         <div>
            {items.map((item, index) => {
-               return ( 
-                <React.Fragment key={index}>
-                    <SavedResultsHeader 
-                        item={item} 
-                        isOpen={cardIsOpen(index)}
-                        onClick={() => handleOpenResultContent(index)}
-                    />
-                    <SavedResultsContent item={item} isOpen={cardIsOpen(index)}/>
-                </React.Fragment>
+               return (
+                <Accordion square 
+                           elevation={5}
+                           expanded={expanded === `panel-${index}`} 
+                           onChange={handleChange(`panel-${index}`)}
+                           className="accordion"
+                           >
+                    <AccordionSummary aria-controls={`panel-${index}d-content`} 
+                                      id={`panel-${index}d-header`}
+                                      className="accordion">
+                        <SavedResultsHeader item={item} />
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <SavedResultsContent item={item}/>
+                    </AccordionDetails>
+                </Accordion>
                )
            })}
         </div>
