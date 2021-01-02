@@ -1,3 +1,14 @@
-.quarterSection {
+.divek {
+    display: inline-block;
+}
+
+.quarterElement {
     width: 30%;
+    display: inline-block;
+}
+
+.grapf {
+    position: absolute;
+    width: 65%;
+    display: inline-block;
 }

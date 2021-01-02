@@ -4,10 +4,12 @@ import {
     ResultSection, 
     EmptyResonatorSection,
     SavedResultsSections, 
+    GraphSection,
 } from './Sections';
 import { Result } from '../../types/Result';
 import { SavedResult } from '../../types/SavedResult';
 import styles from './MainPage.module.css';
+import { Grid } from '@material-ui/core';
 
 const savedResults: SavedResult[] = [
     {    
@@ -63,10 +65,28 @@ const MainPage: React.FC = () => {
     return (
         <>
             <br/>
-            <ActionsSection />
-            <div className={styles.quarterSection}><ResultSection results={results}/></div>
-            <div className={styles.quarterSection}><EmptyResonatorSection /></div>
-            <SavedResultsSections savedResults={savedResults}/>
+            <Grid container>
+                <Grid item xs={12}>
+                    <ActionsSection />
+                </Grid>
+                 <Grid item xs={12}>
+                     <div className={styles.divek}>
+                         <div className={styles.quarterElement}>
+                             <ResultSection results={results}/>
+                         </div>
+                        <div className={styles.grapf}>
+                            <GraphSection/>
+                        </div> <br/>
+                        <div className={styles.quarterElement}>
+                            <EmptyResonatorSection/>
+                        </div>
+                     </div>
+                </Grid>
+                <Grid item xs={12}>
+                    <SavedResultsSections savedResults={savedResults}/>
+                </Grid>
+            </Grid>
+            
         </>
     )
 }

@@ -20,6 +20,7 @@ const SavedResults: React.FC<Props> = ({items}) => {
            {items.map((item, index) => {
                return (
                 <Accordion square 
+                           key={`panel-${index}`}
                            elevation={5}
                            expanded={expanded === `panel-${index}`} 
                            onChange={handleChange(`panel-${index}`)}

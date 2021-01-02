@@ -13,7 +13,7 @@ const ResultSection: React.FC<Props> = ({results}) => {
         <Section title={'Result'}>
             <ResultContent result={results[0]} /> <br/>
             <Grid container>
-                <Grid item xs={9} spacing={1}>
+                <Grid item xs={9}>
                     <TextField label="Name" 
                                variant="outlined" 
                                size='small'/>
