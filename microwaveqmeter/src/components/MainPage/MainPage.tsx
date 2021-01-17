@@ -72,7 +72,7 @@ const MainPage: React.FC = () => {
                  <Grid item xs={12}>
                      <div className={styles.divek}>
                          <div className={styles.quarterElement}>
-                             <ResultSection results={results}/>
+                             <ResultSection results={results} />
                          </div>
                         <div className={styles.grapf}>
                             <GraphSection/>

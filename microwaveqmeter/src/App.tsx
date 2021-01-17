@@ -11,17 +11,17 @@ import './App.css';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <header>
-        <NavBar />
-      </header>
-      <div className="container">
-        <Switch>
-          <Route path="/" exact component={MainPage} />
-          <Route path="/settings" component={SettingsPage} />
-        </Switch>
-      </div>
-    </Router>
+      <Router>
+        <header>
+          <NavBar />
+        </header>
+        <div className="container">
+          <Switch>
+            <Route path="/" exact component={MainPage} />
+            <Route path="/settings" component={SettingsPage} />
+          </Switch>
+        </div>
+      </Router>
   );
 }
 

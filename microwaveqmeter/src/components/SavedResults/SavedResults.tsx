@@ -2,13 +2,23 @@ import React from 'react';
 import { SavedResult } from '../../types/SavedResult';
 import SavedResultsHeader  from './SavedResultsHeader';
 import SavedResultsContent from './SavedResultsContent';
-import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
+import {
+     Accordion,
+     AccordionSummary, 
+     AccordionDetails, 
+     Select,
+     InputLabel,
+     MenuItem,
+     Button,
+     Grid 
+} from '@material-ui/core';
 
 type Props = {
     items: SavedResult[];
+    savedResulsFilesNames: string[];
 }
 
-const SavedResults: React.FC<Props> = ({items}) => {
+const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
     const [expanded, setExpanded] = React.useState('');
 
     const handleChange = (panel: any) => (event:any, newExpanded:any) => {
@@ -16,7 +26,24 @@ const SavedResults: React.FC<Props> = ({items}) => {
     };
 
     return (
-        <div>
+        <div> 
+            <Grid container>
+                <Grid item xs={2}>
+                    <InputLabel id="SavedResultsSelectLabel">Saved results</InputLabel>
+                    <Select labelId="SavedResultsSelectLabel" id="SavedResultsSelect">
+                        <MenuItem value={'New'}>{'New'}</MenuItem>
+                        {savedResulsFilesNames.map(fileName => <MenuItem value={fileName}>{fileName}</MenuItem>)}
+                    </Select>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button variant="contained" 
+                            color="primary" 
+                            size='large'>
+                        {'Export to CSV'}
+                    </Button>
+                </Grid>
+            </Grid> 
+                <br/>
            {items.map((item, index) => {
                return (
                 <Accordion square 
