@@ -10,7 +10,8 @@ import {
      InputLabel,
      MenuItem,
      Button,
-     Grid 
+     Grid,
+     TextField 
 } from '@material-ui/core';
 
 type Props = {
@@ -27,9 +28,15 @@ const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
 
     return (
         <div> 
-            <Grid container>
+            <Grid container spacing={1}>
                 <Grid item xs={2}>
-                    <InputLabel id="SavedResultsSelectLabel">Saved results</InputLabel>
+                    <TextField label="Session name" 
+                               variant="outlined" 
+                               size='small'
+                               />
+                </Grid>
+                <Grid item xs={2}>
+                    <InputLabel id="SavedResultsSelectLabel">Archived sessions</InputLabel>
                     <Select labelId="SavedResultsSelectLabel" id="SavedResultsSelect">
                         <MenuItem value={'New'}>{'New'}</MenuItem>
                         {savedResulsFilesNames.map(fileName => <MenuItem value={fileName}>{fileName}</MenuItem>)}

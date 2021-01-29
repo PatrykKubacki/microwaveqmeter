@@ -19,7 +19,8 @@ export const resultSlice = createSlice({
     }
   })
   
-  export const { saveResult } = resultSlice.actions
+  export const { saveResult } = resultSlice.actions;
+  
   export const selectCurrentResults = (state: any) => state.result.currentResults;
   
   export default resultSlice.reducer

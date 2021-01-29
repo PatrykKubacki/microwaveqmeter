@@ -30,7 +30,8 @@ const GraphSection = ({ chartData }) => {
         data.push(dataSeries);
         newOptions.data = data
 
-        setOptions(newOptions)
+        setOptions(newOptions);
+
     },[chartData]);
 
     return (

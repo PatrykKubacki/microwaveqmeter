@@ -3,7 +3,7 @@ import Section from '../Section/Section';
 import { SavedResult } from '../../../../types/SavedResult';
 import SavedResults from '../../../SavedResults/SavedResults';
 import { useSelector } from 'react-redux'
-import { selectCurrentResults } from '../../../../store/slice';
+import { selectCurrentResults } from '../../../../store/resultReducer';
 
 type Props = {
    savedResults: SavedResult[]

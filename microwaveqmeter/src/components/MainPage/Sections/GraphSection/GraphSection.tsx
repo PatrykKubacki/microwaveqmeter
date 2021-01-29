@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setChartData as setChartDataAction } from '../../../../store/chartDataReducer';
 import Graph from './Graph';
 import * as SignalR from '@microsoft/signalr';
 
@@ -24,6 +26,7 @@ const initialChartData = {
 const GraphSection: React.FC = () => {
     const [hubConnection, setHubConnection] = useState<SignalR.HubConnection>();
     const [chartData, setChartData] = useState<ChartData>(initialChartData);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const connection = new SignalR.HubConnectionBuilder()
@@ -52,7 +55,20 @@ const GraphSection: React.FC = () => {
             });
         }
        
-    },[hubConnection])
+    },[hubConnection]);
+
+    useEffect(()=> {
+        const setChartDataReduxState = () => {
+            const data = {
+                startFrequency: chartData.startFrequency,
+                stopFrequency: chartData.stopFrequency,
+                pointsOnScreen: chartData.pointsOnScreen,
+            }
+            dispatch(setChartDataAction(data));
+        }
+
+        setChartDataReduxState();
+    },[chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen, dispatch])
 
     return (
     <div>
