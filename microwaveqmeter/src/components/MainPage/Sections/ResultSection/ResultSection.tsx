@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Section from '../Section/Section';
-import { Result } from '../../../../types/Result';
+import { Result, ResultBackend } from '../../../../types/Result';
+import { useSelector } from 'react-redux'
 import ResultContent  from './ResultContent';
 import {
      Button,
@@ -17,7 +18,8 @@ import {
     RadioGroup,
     Paper } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { saveResult } from '../../../../store/resultReducer';
+import { saveResult, selectCurrentResult } from '../../../../store/resultReducer';
+import { selectPointsOnScreen } from '../../../../store/chartDataReducer';
 
 type OwnProps = {
     results: Result[];
@@ -26,22 +28,24 @@ type Props =  OwnProps;
 
 const ResultSection: React.FC<Props> = ({results}) => {
     const [manyResonanceMode, setManyResonanceMode] = useState(false);
+    const resultFromRedux: ResultBackend = useSelector(selectCurrentResult);
+    const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const [resultName, setResultName] = useState('');
     const dispatch = useDispatch();
     const handleSaveResultButton = () => {
         let result = {    
             sampleName:'Duroid 5880',
-            frequencyDifference: '1183.3',
+            frequencyDifference: resultFromRedux.CenterFrequencyDifference,
             h: '0.508',
             permittivity: '2.254171',
             dielLossTangent: '9.6580E-40',
             resistivity: '',
             sheetResistance: '',
             f0: '5123.960',
-            q: '9789',
-            bw: '0.5344',
-            peak: '-33.9',
-            points: '529',
+            q: resultFromRedux.Q_factor,
+            bw: resultFromRedux.Bandwidth,
+            peak: resultFromRedux.PeakTransmittance,
+            points: pointsOnScreen,
         }
         result.sampleName = resultName !== '' 
                                 ? resultName
@@ -57,7 +61,7 @@ const ResultSection: React.FC<Props> = ({results}) => {
     return (
         <Section title={'Result'}>
             {!manyResonanceMode ? (
-            <><ResultContent result={results[0]} /> <br/>
+            <><ResultContent result={results[0]} resultFromRedux={resultFromRedux} pointsOnScreen={pointsOnScreen}/> <br/>
             </>):(<ManyMode results={results}/>)}
             <br/>
             <Grid container>
@@ -93,7 +97,6 @@ type ManyModeProps = {
 
 const ManyMode: React.FC<ManyModeProps> = ({ results }) => {
     const [activeRadio, setActiveRadio] = React.useState('radio_0');
-
     // const handleChangeActiveRadio = (event:  React.ChangeEvent<HTMLInputElement>) => {
     //     setActiveRadio(event.target.value);
     // };

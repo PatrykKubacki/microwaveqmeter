@@ -6,3 +6,11 @@ export type Result = {
     peak: string;
     points: string;
 }
+
+export type ResultBackend = {
+    Q_factor: number;
+    CenterFrequency: number;
+    Bandwidth: number;
+    PeakTransmittance: number;
+    CenterFrequencyDifference: number;
+}

@@ -1,32 +1,34 @@
 import React from 'react';
-import { Result } from '../../../../types/Result';
+import { Result, ResultBackend } from '../../../../types/Result';
 import { LabelData } from '../../../Controls';
 import { Grid } from '@material-ui/core';
 
 type Props = {
     result: Result;
+    resultFromRedux: ResultBackend;
+    pointsOnScreen: number;
 }
 
-const ResultContent: React.FC<Props> = ({result}) => {
+const ResultContent: React.FC<Props> = ({result, resultFromRedux, pointsOnScreen}) => {
     return (
         <Grid container>
             <Grid item xs={12}>
-                <LabelData bold doubleSize label={'Q Factor'} value={result.q} />
+                <LabelData bold doubleSize label={'Q Factor'} value={resultFromRedux.Q_factor.toString()} />
             </Grid>
             <Grid item xs={12}>
-                <LabelData bold label={'Center frequency difference'} value={result.frequencyDifference} />
+                <LabelData bold label={'Center frequency difference'} value={`${resultFromRedux.CenterFrequencyDifference.toString()} Mhz`} />
             </Grid>
             <Grid item xs={12}>
-                <LabelData label={'Center frequency [MHz]'} value={result.f0} />
+                <LabelData label={'Center frequency'} value={`${resultFromRedux.CenterFrequency.toString()} Mhz`} />
             </Grid>
             <Grid item xs={12}>
-                <LabelData label={'3-dB bandwidth [MHz]'} value={result.bw} />
+                <LabelData label={'3-dB bandwidth'} value={`${resultFromRedux.Bandwidth.toString()} Mhz`} />
             </Grid>
             <Grid item xs={12}>
-                <LabelData label={'Peak transmittance [dB]'} value={result.peak} />
+                <LabelData label={'Peak transmittance'} value={`${resultFromRedux.PeakTransmittance.toString()} dB`} />
             </Grid>
             <Grid item xs={12}>
-                <LabelData label={'Number of Points'} value={result.points} /> 
+                <LabelData label={'Number of Points'} value={pointsOnScreen.toString()} /> 
             </Grid>
         </Grid>
     )
