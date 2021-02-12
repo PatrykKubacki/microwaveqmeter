@@ -2,6 +2,7 @@ import React from 'react';
 import { SavedResult } from '../../types/SavedResult';
 import SavedResultsHeader  from './SavedResultsHeader';
 import SavedResultsContent from './SavedResultsContent';
+import { CSVLink } from "react-csv"
 import {
      Accordion,
      AccordionSummary, 
@@ -13,6 +14,9 @@ import {
      Grid,
      TextField 
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { selectCurrentResults } from '../../store/resultReducer';
+import styles from './SavedResult.module.css';
 
 type Props = {
     items: SavedResult[];
@@ -21,6 +25,7 @@ type Props = {
 
 const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
     const [expanded, setExpanded] = React.useState('');
+    const savedResults = useSelector(selectCurrentResults);
 
     const handleChange = (panel: any) => (event:any, newExpanded:any) => {
       setExpanded(newExpanded ? panel : false);
@@ -43,11 +48,16 @@ const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
                     </Select>
                 </Grid>
                 <Grid item xs={2}>
-                    <Button variant="contained" 
-                            color="primary" 
-                            size='large'>
-                        {'Export to CSV'}
-                    </Button>
+                    <CSVLink data={savedResults}
+                             separator=";" 
+                             className={styles.exportToCsvLink}
+                             filename={`Exported_Measurements_${Date.now().toPrecision().toString()}.csv`}>
+                         <Button variant="contained" 
+                                 color="primary" 
+                                 size='large'>
+                         {'Export to CSV'}
+                        </Button>
+                    </CSVLink> 
                 </Grid>
             </Grid> 
                 <br/>
