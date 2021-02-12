@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Section from '../Section/Section';
 import { Button, TextField, Grid } from '@material-ui/core';
+import { useSelector } from 'react-redux'
+import { ResultBackend } from '../../../../types/Result';
+import { EmptyResonator } from '../../../../types/EmptyResonator';
+import { selectCurrentResult } from '../../../../store/resultReducer';
+import { useDispatch } from 'react-redux';
+import {
+    setQFactor,
+    setEmptyResonator,
+    setCenterFrequency,
+    setPeakTransmittance,
+    selectEmptyResonator,
+} from '../../../../store/resonatorReducer';
 
 const EmptyResonatorSection: React.FC = () => {
-    const [qFactor, setQFactor] = useState('');
-    const [centerFrequency, setCenterFrequency] = useState('');
-    const [peakTransmittance, setPeakTransmittance] = useState('');
-
-    const setStateEmptyResonator = (qFactor: string, centerFrequency: string, peakTransmittance: string) => {
-        setQFactor(qFactor);
-        setCenterFrequency(centerFrequency);
-        setPeakTransmittance(peakTransmittance);
-    }
+    const currentResult: ResultBackend = useSelector(selectCurrentResult);
+    const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
+    const dispatch = useDispatch();
 
     const handleGetEmptyResonator = () => {
-        fetch('https://localhost:44353/api/Home/GetEmptyResonator')
-            .then(res => res.json())
-            .then(json => setStateEmptyResonator(json.qFactor, json.centerFrequency, json.peakTransmittance))
-            .catch(error => console.log(error));
+        const resonator = {
+            qFactor: currentResult.Q_factor,
+            centerFrequency: currentResult.CenterFrequency,
+            peakTransmittance: currentResult.PeakTransmittance
+        };
+        dispatch(setEmptyResonator(resonator));
     }   
 
     return (
@@ -27,19 +35,25 @@ const EmptyResonatorSection: React.FC = () => {
                     <TextField label="Q Factor" 
                                variant="outlined" 
                                size='small'
-                               value={qFactor}/>
+                               type={'number'}
+                               onChange={(e)=> dispatch(setQFactor(e.target.value))}
+                               value={emptyResonator.qFactor}/>
                 </Grid>  
                 <Grid item xs={12}>
                     <TextField label="Center frequency [MHz]" 
                                variant="outlined" 
                                size='small'
-                               value={centerFrequency}/>
+                               type={'number'}
+                               onChange={(e)=> dispatch(setCenterFrequency(e.target.value))}
+                               value={emptyResonator.centerFrequency}/>
                 </Grid>  
                 <Grid item xs={12}>
                     <TextField label="Peak transmittance [dB]" 
                                variant="outlined" 
                                size='small'
-                               value={peakTransmittance}/>
+                               type={'number'}
+                               onChange={(e)=> dispatch(setPeakTransmittance(e.target.value))}
+                               value={emptyResonator.peakTransmittance}/>
                 </Grid>
                 <Grid item xs={12}>
                     <Button variant="contained" 
