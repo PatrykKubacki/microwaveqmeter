@@ -42,5 +42,6 @@ export const {
      setPeakTransmittance } = resonatorSlice.actions;
 
 export const selectEmptyResonator = (state: any) => state.resonator.emptyResonator;
+export const selectEmptyResonatorCenterFrequency = (state: any) => state.resonator.emptyResonator.centerFrequency;
 
 export default resonatorSlice.reducer
