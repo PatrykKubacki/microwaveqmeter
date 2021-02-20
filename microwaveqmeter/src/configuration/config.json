@@ -1,0 +1,18 @@
+{
+    "settings": {
+        "savedResultDisplay": {
+            "displaySampleName": true,
+            "displayH": true,
+            "displayPermittivity": false,
+            "displayDielLossTangent": false,
+            "displayResistivity": false,
+            "displaySheetResistance": true,
+            "displayQFactor": true,
+            "displayFrequencyDifference": true,
+            "displayF0": true,
+            "displayBandwidth": true,
+            "displayPeakTransmittance": true,
+            "displayPointsOnScreen": false
+        }
+    }
+}

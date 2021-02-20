@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { SavedResult } from '../../types/SavedResult';
+import { selectSavedResultDisplay } from '../../store/settingsReducer';
 import styles from './SavedResultsHeader.module.css';
 
 type Props = {
@@ -7,14 +9,22 @@ type Props = {
 }
 
 const SavedResultsHeader: React.FC<Props> = ({item}) => {
+    const {
+        displaySampleName,
+        displayH,
+        displayPermittivity,
+        displayDielLossTangent,
+        displayResistivity,
+        displaySheetResistance } = useSelector(selectSavedResultDisplay)
+    
     return (
         <>
-          <CellLabel>{`Sample: ${item.sampleName}`}</CellLabel>
-          <CellLabel>{`h [mm]: ${item.h}`}</CellLabel>
-          <CellLabel>{`Permittivity: ${item.permittivity}`}</CellLabel>
-          <CellLabel>{`Diel.loss tangent: ${item.dielLossTangent}`}</CellLabel>
-          <CellLabel>{`Resistivity: ${item.resistivity}`}</CellLabel>
-          <CellLabel>{`Sheet resistance: ${item.sheetResistance}`}</CellLabel>
+          {displaySampleName && <CellLabel>{`Sample: ${item.sampleName}`}</CellLabel>}
+          {displayH && <CellLabel>{`h [mm]: ${item.h}`}</CellLabel>}
+          {displayPermittivity && <CellLabel>{`Permittivity: ${item.permittivity}`}</CellLabel>}
+          {displayDielLossTangent && <CellLabel>{`Diel.loss tangent: ${item.dielLossTangent}`}</CellLabel>}
+          {displayResistivity && <CellLabel>{`Resistivity: ${item.resistivity}`}</CellLabel>}
+          {displaySheetResistance && <CellLabel>{`Sheet resistance: ${item.sheetResistance}`}</CellLabel>}
         </>
     ) 
 }
