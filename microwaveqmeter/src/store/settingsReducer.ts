@@ -23,18 +23,7 @@ export const settingsSlice = createSlice({
     reducers: {
           setSavedResultDisplay: (state, action) => {
               state.savedResultDisplay = {
-                displaySampleName: action.payload.displaySampleName,
-                displayH: action.payload.displayH,
-                displayPermittivity: action.payload.displayPermittivity,
-                displayDielLossTangent: action.payload.displayDielLossTangent,
-                displayResistivity: action.payload.displayResistivity,
-                displaySheetResistance: action.payload.displaySheetResistance,
-                displayQFactor: action.payload.displayQFactor,
-                displayFrequencyDifference: action.payload.displayFrequencyDifference,
-                displayF0: action.payload.displayF0,
-                displayBandwidth: action.payload.displayBandwidth,
-                displayPeakTransmittance: action.payload.displayPeakTransmittance,
-                displayPointsOnScreen: action.payload.displayPointsOnScreen,
+                ...action.payload,
               }
           }
     }

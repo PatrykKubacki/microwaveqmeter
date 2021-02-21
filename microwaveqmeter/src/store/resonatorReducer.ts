@@ -19,9 +19,7 @@ export const resonatorSlice = createSlice({
     reducers: {
         setEmptyResonator: (state, action) => {
             state.emptyResonator = {
-                qFactor: action.payload.qFactor,
-                centerFrequency: action.payload.centerFrequency,
-                peakTransmittance: action.payload.peakTransmittance,
+                ...action.payload,
             } 
         },
         setQFactor: (state, action) => {
