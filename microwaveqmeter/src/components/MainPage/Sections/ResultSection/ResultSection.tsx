@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Section from '../Section/Section';
 import { Result, ResultBackend } from '../../../../types/Result';
+import { GetConverterResultRequest, SplitPostResult } from '../../../../types/Converter';
+import { ConverterInfo } from '../../../../types/Settings';
+import { EmptyResonator } from '../../../../types/EmptyResonator';
 import { useSelector } from 'react-redux'
 import styles from './ResultSection.module.css';
 import ResultContent  from './ResultContent';
@@ -13,6 +16,9 @@ import {
 import { useDispatch } from 'react-redux';
 import { saveResult, selectCurrentResult } from '../../../../store/resultReducer';
 import { selectPointsOnScreen } from '../../../../store/chartDataReducer';
+import { selectConverterInfo } from '../../../../store/settingsReducer';
+import { selectEmptyResonator } from '../../../../store/resonatorReducer';
+import { ConverterResultMapper } from '../../../../mappers/converterResult';
 
 type OwnProps = {
     results: Result[];
@@ -26,16 +32,28 @@ const ResultSection: React.FC<Props> = ({results}) => {
 
     const resultFromRedux: ResultBackend = useSelector(selectCurrentResult);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
+    const converterInfo: ConverterInfo = useSelector(selectConverterInfo);
+    const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
     const dispatch = useDispatch();
-    const handleSaveResultButton = () => {
+    const handleSaveResultButton = async() => {
+        const getConverterResultRequest: GetConverterResultRequest = {
+            ResonatorName: converterInfo.resonatorName,
+            ResonatorType: converterInfo.resonatorType,
+            H: h !== '' ? h :'0.0',
+            CenterFrequency: resultFromRedux.CenterFrequency.toString(),
+            QFactor: resultFromRedux.Q_factor.toString(),
+            UnloadedCenterFrequency: emptyResonator.centerFrequency.toString(),
+            UnloadedQ: emptyResonator.qFactor.toString(),
+        };
+        const converterResult = await getConverterResult(getConverterResultRequest);
         let result = {    
             sampleName: resultName !== '' ? resultName : 'Default Sample Name',
             frequencyDifference: resultFromRedux.CenterFrequencyDifference,
             h: h !== '' ? h :'0.0',
-            permittivity: '2.254171',
-            dielLossTangent: '9.6580E-40',
-            resistivity: '',
-            sheetResistance: '',
+            permittivity: converterResult && converterResult.Permittivity !== undefined ? converterResult.Permittivity: '',
+            dielLossTangent: converterResult && converterResult.DielectricLossTangent !== undefined ? converterResult.DielectricLossTangent: '',
+            resistivity: converterResult && converterResult.Resistivity !== undefined ? converterResult.Resistivity: '',
+            sheetResistance: converterResult && converterResult.SheetRessistance !== undefined ? converterResult.SheetRessistance: '',
             f0: '5123.960',
             q: resultFromRedux.Q_factor,
             bw: resultFromRedux.Bandwidth,
@@ -48,6 +66,21 @@ const ResultSection: React.FC<Props> = ({results}) => {
 
     const changeMode = () => {
         setManyResonanceMode(!manyResonanceMode);
+    }
+
+    const getConverterResult = async (body: GetConverterResultRequest) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        };
+
+        return await fetch('https://localhost:44353/api/Home/GetConverterResult', requestOptions)
+            .then(response => response.json())
+            .then(response => ConverterResultMapper(response, body))
+            .catch((error) => {
+                console.error('Error:', error);
+              });
     }
 
     return (

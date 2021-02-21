@@ -3,16 +3,16 @@
         "savedResultDisplay": {
             "displaySampleName": true,
             "displayH": true,
-            "displayPermittivity": false,
-            "displayDielLossTangent": false,
-            "displayResistivity": false,
+            "displayPermittivity": true,
+            "displayDielLossTangent": true,
+            "displayResistivity": true,
             "displaySheetResistance": true,
             "displayQFactor": true,
             "displayFrequencyDifference": true,
             "displayF0": true,
             "displayBandwidth": true,
             "displayPeakTransmittance": true,
-            "displayPointsOnScreen": false
+            "displayPointsOnScreen": true
         }
     }
 }

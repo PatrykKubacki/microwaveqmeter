@@ -12,3 +12,8 @@ export type SavedResultDisplay = {
     displayPeakTransmittance: boolean,
     displayPointsOnScreen: boolean
 }
+
+export type ConverterInfo = {
+    resonatorName: string;
+    resonatorType: string;
+}
