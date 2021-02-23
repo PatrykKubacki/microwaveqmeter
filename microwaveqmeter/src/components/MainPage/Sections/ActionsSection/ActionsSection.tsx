@@ -33,18 +33,31 @@ const ActionsSection: React.FC = () => {
             });
      }  
      
-     const handleSetStopRange = (value: string) => {
+    const handleSetStopRange = (value: string) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
         };
-         fetch('https://localhost:44353/api/Home/SetStopFrequency', requestOptions)
+        fetch('https://localhost:44353/api/Home/SetStopFrequency', requestOptions)
             .then(response => response.json())
             .catch((error) => {
                 console.error('Error:', error);
             });
-     } 
+     }
+     
+    const handleUnZoomFull = () => {
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'connectionId': connectionId }),
+        };
+        fetch('https://localhost:44353/api/Home/UnZoomFull', request)
+        .then(response => response.json())
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
 
     return (
         <Section title={'Graph settings and actions'}>
@@ -66,7 +79,8 @@ const ActionsSection: React.FC = () => {
                 <Grid item xs={2}>
                     <Button variant="contained" 
                             color="primary" 
-                            size='large'>
+                            size='large'
+                            onClick={handleUnZoomFull}>
                         {'Un-zoom full'}
                     </Button>
                 </Grid>
