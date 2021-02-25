@@ -1,6 +1,6 @@
 import React from 'react';
 import { Result, ResultBackend } from '../../../../types/Result';
-import { LabelData } from '../../../Controls';
+import { LabelDataWithGrid } from '../../../Controls';
 import { Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { selectEmptyResonatorCenterFrequency } from '../../../../store/resonatorReducer';
@@ -21,26 +21,22 @@ const ResultContent: React.FC<Props> = ({result, resultFromRedux, pointsOnScreen
         return isNaN(result) ? 0 : result.toString();
     }
 
+     const formatEmptyValue = (value: number) => {
+         return value === null || value === undefined || value === 0 || isNaN(value)
+            ? '---' 
+            : value.toString();
+     }
+
+     
+
     return (
         <Grid container>
-            <Grid item xs={12}>
-                <LabelData bold doubleSize label={'Q Factor'} value={resultFromRedux.Q_factor.toString()} />
-            </Grid>
-            <Grid item xs={12}>
-                <LabelData bold label={'Center frequency difference'} value={`${getCenterFrequencyDifference()} Mhz`} />
-            </Grid>
-            <Grid item xs={12}>
-                <LabelData label={'Center frequency'} value={`${resultFromRedux.CenterFrequency.toString()} Mhz`} />
-            </Grid>
-            <Grid item xs={12}>
-                <LabelData label={'3-dB bandwidth'} value={`${resultFromRedux.Bandwidth.toString()} Mhz`} />
-            </Grid>
-            <Grid item xs={12}>
-                <LabelData label={'Peak transmittance'} value={`${resultFromRedux.PeakTransmittance.toString()} dB`} />
-            </Grid>
-            <Grid item xs={12}>
-                <LabelData label={'Number of Points'} value={pointsOnScreen.toString()} /> 
-            </Grid>
+            <LabelDataWithGrid bold doubleSize label={'Q Factor'} value={formatEmptyValue(resultFromRedux.Q_factor)} />
+            <LabelDataWithGrid bold label={'Center frequency diff'} value={`${getCenterFrequencyDifference()} Mhz`} />
+            <LabelDataWithGrid label={'Center frequency'} value={`${formatEmptyValue(resultFromRedux.CenterFrequency)} Mhz`} />
+            <LabelDataWithGrid label={'3-dB bandwidth'} value={`${formatEmptyValue(resultFromRedux.Bandwidth)} Mhz`} />
+            <LabelDataWithGrid label={'Peak transmittance'} value={`${formatEmptyValue(resultFromRedux.PeakTransmittance)} dB`} />
+            <LabelDataWithGrid label={'Number of Points'} value={formatEmptyValue(pointsOnScreen)} /> 
         </Grid>
     )
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import classnames from 'classnames';
-import styles from './LabelData.module.css';
+import Label from './Label';
+import { Grid } from '@material-ui/core';
 
 type Props = {
     label: string;
@@ -9,15 +9,26 @@ type Props = {
     doubleSize?: boolean;
 }
 
+const LabelDataWithGrid: React.FC<Props> = ({label, value, bold, doubleSize}) => {
+    return (
+        <>
+            <Grid item xs={7}>
+                <Label bold={bold} doubleSize={doubleSize} value={`${label}: `} />
+            </Grid>
+            <Grid item xs={5}>
+                <Label bold={bold} doubleSize={doubleSize} value={value} />
+            </Grid>
+         </>
+    )
+}
+
 const LabelData: React.FC<Props> = ({label, value, bold, doubleSize}) => {
     return (
-        <label className={classnames(styles.self, {
-            [styles.bold]: bold,
-            [styles.doubleSize]: doubleSize,
-        })}>
-            {`${label}: ${value}`}
-        </label>
+        <>
+            <Label bold={bold} doubleSize={doubleSize} value={`${label}: ${value}`} />
+         </>
     )
-} 
+}
 
-export default LabelData;
+export { LabelData };
+export default LabelDataWithGrid;
