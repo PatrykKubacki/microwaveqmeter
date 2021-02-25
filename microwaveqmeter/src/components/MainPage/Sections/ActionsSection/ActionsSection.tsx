@@ -45,6 +45,19 @@ const ActionsSection: React.FC = () => {
                 console.error('Error:', error);
             });
      }
+
+     const handleSetPointsOnScreen = (value: string) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
+        };
+        fetch('https://localhost:44353/api/Home/SetPointsOnScreen', requestOptions)
+            .then(response => response.json())
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+     }
      
     const handleUnZoomFull = () => {
         const request = {
@@ -102,6 +115,7 @@ const ActionsSection: React.FC = () => {
                     <TextField label="Points on screen" 
                                variant="outlined" 
                                size='small'
+                               onChange={(e) => handleSetPointsOnScreen(e.target.value)}
                                value={pointsOnScreen}/>
                 </Grid>
 
