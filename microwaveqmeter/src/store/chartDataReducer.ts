@@ -39,5 +39,6 @@ export const selectStartFrequency = (state: any) => state.chartData.startFrequen
 export const selectStopFrequency = (state: any) => state.chartData.stopFrequency;
 export const selectPointsOnScreen = (state: any) => state.chartData.pointsOnScreen;
 export const selectHubConnectionId = (state: any) => state.chartData.hubConnectionId;
+export const selectMaximums = (state: any) => state.chartData.maximums;
 
 export default chartDataSlice.reducer;
