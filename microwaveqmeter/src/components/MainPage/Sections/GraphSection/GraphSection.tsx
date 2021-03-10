@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setChartData as setChartDataAction, setHubConnectionId } from '../../../../store/chartDataReducer';
 import { setCurrentResult } from '../../../../store/resultReducer';
 import { ResultBackend } from '../../../../types/Result';
+import { MaximumOnChart } from '../../../../types/Chart';
 import Graph from './Graph';
 import * as SignalR from '@microsoft/signalr';
 
@@ -17,10 +18,12 @@ type ChartData = {
     stopFrequency: number;
     pointsOnScreen: number;
     qFactorResult: ResultBackend;
+    maximums: MaximumOnChart[];
 }
 
 const initialChartData = {
     points: [],
+    maximums: [],
     startFrequency: 0,
     stopFrequency: 0,
     pointsOnScreen: 0,
@@ -93,13 +96,14 @@ const GraphSection: React.FC = () => {
                 startFrequency: chartData.startFrequency,
                 stopFrequency: chartData.stopFrequency,
                 pointsOnScreen: chartData.pointsOnScreen,
+                maximums: chartData.maximums,
             }
             dispatch(setChartDataAction(data));
             dispatch(setCurrentResult(chartData.qFactorResult))
         }
 
         setChartDataReduxState();
-    },[chartData.qFactorResult, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen, dispatch])
+    },[chartData.qFactorResult, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen,chartData.maximums, dispatch])
 
     return (
     <div>
