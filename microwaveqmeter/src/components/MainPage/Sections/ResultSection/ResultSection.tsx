@@ -54,7 +54,7 @@ const ResultSection: React.FC<Props> = ({results}) => {
             dielLossTangent: converterResult && converterResult.DielectricLossTangent !== undefined ? converterResult.DielectricLossTangent: '',
             resistivity: converterResult && converterResult.Resistivity !== undefined ? converterResult.Resistivity: '',
             sheetResistance: converterResult && converterResult.SheetRessistance !== undefined ? converterResult.SheetRessistance: '',
-            f0: '5123.960',
+            f0: resultFromRedux.CenterFrequency,
             q: resultFromRedux.Q_factor,
             bw: resultFromRedux.Bandwidth,
             peak: resultFromRedux.PeakTransmittance,
