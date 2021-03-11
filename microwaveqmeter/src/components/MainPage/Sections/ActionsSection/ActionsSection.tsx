@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Section from '../Section/Section';
 import { useSelector } from 'react-redux';
 import { 
@@ -12,6 +12,9 @@ import { Button, TextField, Grid } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
 
 const ActionsSection: React.FC = () => {
+    const [startFrequencyState, setStartFrequencyState] = useState('');
+    const [stopFrequencyState, setStopFrequencyState] = useState('');
+    const [pointsOnScreenState, setPointsOnScreenState] = useState('');
     const startFrequency: number = useSelector(selectStartFrequency);
     const stopFrequency: number = useSelector(selectStopFrequency);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
@@ -24,44 +27,68 @@ const ActionsSection: React.FC = () => {
         body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
     });
 
-    const handleSetStartRange = (value: string) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-        };
-         fetch('https://localhost:44353/api/Home/SetStartFrequency', requestOptions)
-            .then(response => response.json())
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-     }  
-     
-    const handleSetStopRange = (value: string) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-        };
-        fetch('https://localhost:44353/api/Home/SetStopFrequency', requestOptions)
-            .then(response => response.json())
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-     }
+    useEffect(() => {
+        setStartFrequencyState(startFrequency.toString());
+      }, [startFrequency]);
 
-     const handleSetPointsOnScreen = (value: string) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-        };
-        fetch('https://localhost:44353/api/Home/SetPointsOnScreen', requestOptions)
-            .then(response => response.json())
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-     }
+      useEffect(() => {
+        setStopFrequencyState(stopFrequency.toString());
+      }, [stopFrequency]);
+
+      useEffect(() => {
+        setPointsOnScreenState(pointsOnScreen.toString());
+      }, [pointsOnScreen]);
+
+    useEffect(() => {
+        const handleSetStartRange = (value: string) => {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
+            };
+             fetch('https://localhost:44353/api/Home/SetStartFrequency', requestOptions)
+                .then(response => response.json())
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        const timeOutId = setTimeout(() => handleSetStartRange(startFrequencyState), 500);
+        return () => clearTimeout(timeOutId);
+      }, [startFrequencyState, connectionId]);
+    
+     useEffect(() => {
+        const handleSetStopRange = (value: string) => {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
+            };
+            fetch('https://localhost:44353/api/Home/SetStopFrequency', requestOptions)
+                .then(response => response.json())
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+         }
+        const timeOutId = setTimeout(() => handleSetStopRange(stopFrequencyState), 500);
+        return () => clearTimeout(timeOutId);
+      }, [stopFrequencyState, connectionId]);
+
+     useEffect(() => {
+        const handleSetPointsOnScreen = (value: string) => {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
+            };
+            fetch('https://localhost:44353/api/Home/SetPointsOnScreen', requestOptions)
+                .then(response => response.json())
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+         }
+        const timeOutId = setTimeout(() => handleSetPointsOnScreen(pointsOnScreenState), 500);
+        return () => clearTimeout(timeOutId);
+      }, [pointsOnScreenState, connectionId]);
      
     const handleUnZoomFull = () => {
         const request = {
@@ -125,22 +152,22 @@ const ActionsSection: React.FC = () => {
                     <TextField label="Start [Mhz]" 
                                variant="outlined" 
                                size='small'
-                               onChange={(e) => handleSetStartRange(e.target.value)}
-                               value={startFrequency}/>
+                               onChange={(e) =>setStartFrequencyState(e.target.value)}
+                               value={startFrequencyState}/>
                 </Grid>
                 <Grid item xs={2}>
                     <TextField label="Stop [Mhz]" 
                                variant="outlined" 
                                size='small'
-                               onChange={(e) => handleSetStopRange(e.target.value)}
-                               value={stopFrequency}/>
+                               onChange={(e) => setStopFrequencyState(e.target.value)}
+                               value={stopFrequencyState}/>
                 </Grid>
                 <Grid item xs={2}>
                     <TextField label="Points on screen" 
                                variant="outlined" 
                                size='small'
-                               onChange={(e) => handleSetPointsOnScreen(e.target.value)}
-                               value={pointsOnScreen}/>
+                               onChange={(e) => setPointsOnScreenState(e.target.value)}
+                               value={pointsOnScreenState}/>
                 </Grid>
 
             </Grid>
