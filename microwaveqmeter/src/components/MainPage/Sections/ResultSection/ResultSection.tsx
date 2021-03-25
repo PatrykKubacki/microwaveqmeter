@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { saveResult, selectCurrentResult } from '../../../../store/resultReducer';
-import { selectPointsOnScreen } from '../../../../store/chartDataReducer';
+import { selectPointsOnScreen, selectHubConnectionId } from '../../../../store/chartDataReducer';
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
@@ -27,9 +27,11 @@ type Props =  OwnProps;
 
 const ResultSection: React.FC<Props> = ({results}) => {
     const [manyResonanceMode, setManyResonanceMode] = useState(false);
+    const [IsObjectInside, seIsObjectInside] = useState(false);
     const [resultName, setResultName] = useState('');
     const [h, setH] = useState('');
 
+    const connectionId: string = useSelector(selectHubConnectionId);
     const resultFromRedux: ResultBackend = useSelector(selectCurrentResult);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const converterInfo: ConverterInfo = useSelector(selectConverterInfo);
@@ -83,6 +85,22 @@ const ResultSection: React.FC<Props> = ({results}) => {
               });
     }
 
+    const handleInsertObject = async() => {
+        const newIsObjectInside = !IsObjectInside;
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 'connectionId': connectionId, 'IsObjectInside': newIsObjectInside })
+        };
+        seIsObjectInside(newIsObjectInside);
+        return await fetch('https://localhost:44353/api/Home/PutOnOfObject', requestOptions)
+            .then(response => response.json())
+            // .then(response => seIsObjectInside(newIsObjectInside))
+            .catch((error) => {
+                console.error('Error:', error);
+              });
+    }
+
     return (
         <Section title={'Result'}>
             {!manyResonanceMode ? (
@@ -117,10 +135,16 @@ const ResultSection: React.FC<Props> = ({results}) => {
                 </Grid> 
             </Grid> <br/>
                     <Button variant="contained" 
-                            color="default" 
+                            color="secondary" 
                             size='small'
                             onClick={changeMode}>
                         {'temporary button change mode'}
+                    </Button>   <br/><br/>
+                    <Button variant="contained" 
+                            color="secondary" 
+                            size='small'
+                            onClick={handleInsertObject}>
+                        {'temporary button insert object'}
                     </Button>
         </Section>
     )
