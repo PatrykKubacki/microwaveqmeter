@@ -95,7 +95,6 @@ const ResultSection: React.FC<Props> = ({results}) => {
         seIsObjectInside(newIsObjectInside);
         return await fetch('https://localhost:44353/api/Home/PutOnOfObject', requestOptions)
             .then(response => response.json())
-            // .then(response => seIsObjectInside(newIsObjectInside))
             .catch((error) => {
                 console.error('Error:', error);
               });

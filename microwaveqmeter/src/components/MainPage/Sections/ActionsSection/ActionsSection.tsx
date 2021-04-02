@@ -7,9 +7,11 @@ import {
     selectPointsOnScreen,
     selectHubConnectionId,
     selectMaximums,
+    setViewportMinimum,
 } from '../../../../store/chartDataReducer';
 import { Button, TextField, Grid } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
+import { useDispatch } from 'react-redux';
 
 const ActionsSection: React.FC = () => {
     const [startFrequencyState, setStartFrequencyState] = useState('');
@@ -20,6 +22,7 @@ const ActionsSection: React.FC = () => {
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const connectionId: string = useSelector(selectHubConnectionId);
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
+    const dispatch = useDispatch();
 
     const getRangeRequestOptions = (value: string) => ({
         method: 'POST',
@@ -104,8 +107,8 @@ const ActionsSection: React.FC = () => {
     }
 
     const handleAutoCenter = () => {
-        const start = maximums[0].frequency - 100;
-        const stop = maximums[maximums.length - 1].frequency + 100;
+        const start = maximums[0].frequency - 20;
+        const stop = maximums[maximums.length - 1].frequency + 20;
         const request = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -122,6 +125,10 @@ const ActionsSection: React.FC = () => {
         });
     }
 
+    const handleAutoScale = () => {
+        dispatch(setViewportMinimum())
+    }
+
     return (
         <Section title={'Graph settings and actions'}>
             <Grid container spacing={1}>
@@ -136,7 +143,8 @@ const ActionsSection: React.FC = () => {
                 <Grid item xs={2}>
                     <Button variant="contained" 
                             color="primary" 
-                            size='large'>
+                            size='large'
+                            onClick={handleAutoScale}>
                         {'Autoscale'}
                     </Button>
                 </Grid>
