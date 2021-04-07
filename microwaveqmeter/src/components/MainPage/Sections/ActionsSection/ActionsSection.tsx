@@ -9,8 +9,10 @@ import {
     selectMaximums,
     setViewportMinimum,
 } from '../../../../store/chartDataReducer';
+import { selectCurrentResult } from '../../../../store/resultReducer';
 import { Button, TextField, Grid } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
+import { ResultBackend } from '../../../../types/Result';
 import { useDispatch } from 'react-redux';
 
 const ActionsSection: React.FC = () => {
@@ -22,6 +24,7 @@ const ActionsSection: React.FC = () => {
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const connectionId: string = useSelector(selectHubConnectionId);
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
+    const currentResult: ResultBackend = useSelector(selectCurrentResult);
     const dispatch = useDispatch();
 
     const getRangeRequestOptions = (value: string) => ({
@@ -107,8 +110,9 @@ const ActionsSection: React.FC = () => {
     }
 
     const handleAutoCenter = () => {
-        const start = maximums[0].frequency - 20;
-        const stop = maximums[maximums.length - 1].frequency + 20;
+        const bandwidthX3 = currentResult.Bandwidth * 3;
+        const start = maximums[0].frequency - bandwidthX3;
+        const stop = maximums[maximums.length - 1].frequency + bandwidthX3;
         const request = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
