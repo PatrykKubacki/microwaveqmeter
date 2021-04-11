@@ -14,6 +14,7 @@ import { Button, TextField, Grid } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
 import { ResultBackend } from '../../../../types/Result';
 import { useDispatch } from 'react-redux';
+import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 
 const ActionsSection: React.FC = () => {
     const [startFrequencyState, setStartFrequencyState] = useState('');
@@ -26,12 +27,6 @@ const ActionsSection: React.FC = () => {
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
     const currentResult: ResultBackend = useSelector(selectCurrentResult);
     const dispatch = useDispatch();
-
-    const getRangeRequestOptions = (value: string) => ({
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-    });
 
     useEffect(() => {
         setStartFrequencyState(startFrequency.toString());
@@ -47,86 +42,65 @@ const ActionsSection: React.FC = () => {
 
     useEffect(() => {
         const handleSetStartRange = (value: string) => {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-            };
-             fetch('https://localhost:44353/api/Home/SetStartFrequency', requestOptions)
-                .then(response => response.json())
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            const request = createRequestObject(
+                'POST',
+                'https://localhost:44353/api/Home/SetStartFrequency',
+                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+            apiCall(request);
         }
+
         const timeOutId = setTimeout(() => handleSetStartRange(startFrequencyState), 500);
         return () => clearTimeout(timeOutId);
       }, [startFrequencyState, connectionId]);
     
      useEffect(() => {
         const handleSetStopRange = (value: string) => {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-            };
-            fetch('https://localhost:44353/api/Home/SetStopFrequency', requestOptions)
-                .then(response => response.json())
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            const request = createRequestObject(
+                'POST',
+                'https://localhost:44353/api/Home/SetStopFrequency',
+                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+            apiCall(request);
          }
+
         const timeOutId = setTimeout(() => handleSetStopRange(stopFrequencyState), 500);
         return () => clearTimeout(timeOutId);
       }, [stopFrequencyState, connectionId]);
 
      useEffect(() => {
         const handleSetPointsOnScreen = (value: string) => {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'connectionId': connectionId, 'value': value })
-            };
-            fetch('https://localhost:44353/api/Home/SetPointsOnScreen', requestOptions)
-                .then(response => response.json())
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            const request = createRequestObject(
+                'POST',
+                'https://localhost:44353/api/Home/SetPointsOnScreen',
+                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+            apiCall(request);
          }
+
         const timeOutId = setTimeout(() => handleSetPointsOnScreen(pointsOnScreenState), 500);
         return () => clearTimeout(timeOutId);
       }, [pointsOnScreenState, connectionId]);
      
     const handleUnZoomFull = () => {
-        const request = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'connectionId': connectionId }),
-        };
-        fetch('https://localhost:44353/api/Home/UnZoomFull', request)
-        .then(response => response.json())
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        const request = createRequestObject(
+            'POST',
+            'https://localhost:44353/api/Home/UnZoomFull',
+            JSON.stringify({ 'connectionId': connectionId }));
+        apiCall(request);
     }
 
     const handleAutoCenter = () => {
         const bandwidthX3 = currentResult.Bandwidth * 3;
         const start = maximums[0].frequency - bandwidthX3;
         const stop = maximums[maximums.length - 1].frequency + bandwidthX3;
-        const request = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                 'connectionId': connectionId,
-                 'start': start.toString().replace('.',','),
-                 'stop': stop.toString().replace('.',',')
-                 }),
-        };
-        fetch('https://localhost:44353/api/Home/SetStartStopRangeFrequency', request)
-        .then(response => response.json())
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+
+        const request = createRequestObject(
+            'POST',
+            'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
+            JSON.stringify({
+                'connectionId': connectionId,
+                'start': start.toString().replace('.',','),
+                'stop': stop.toString().replace('.',',')
+                }));
+        apiCall(request);
     }
 
     const handleAutoScale = () => {

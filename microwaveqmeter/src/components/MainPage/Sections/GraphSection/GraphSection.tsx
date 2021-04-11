@@ -4,6 +4,7 @@ import { setChartData as setChartDataAction, setHubConnectionId } from '../../..
 import { setCurrentResult } from '../../../../store/resultReducer';
 import { ResultBackend } from '../../../../types/Result';
 import { MaximumOnChart } from '../../../../types/Chart';
+import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import Graph from './Graph';
 import * as SignalR from '@microsoft/signalr';
 
@@ -48,17 +49,11 @@ const GraphSection: React.FC = () => {
     const setHubConnectionIdApiCall = (connectionId: string|null) => {
         if(connectionId !== null)
         {
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 'connectionId': connectionId })
-            };
-
-            fetch('https://localhost:44353/api/Home/SetChartHubConnection', requestOptions)
-                .then(response => response.json())
-                .catch((error) => {
-                    console.error('Error:', error);
-                  });
+            const request = createRequestObject(
+                'POST',
+                'https://localhost:44353/api/Home/SetChartHubConnection',
+                JSON.stringify({ 'connectionId': connectionId }));
+            apiCall(request);
         }
        
     }

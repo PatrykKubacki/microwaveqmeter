@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Section from '../Section/Section';
 import { Result, ResultBackend } from '../../../../types/Result';
-import { GetConverterResultRequest, SplitPostResult } from '../../../../types/Converter';
+import { GetConverterResultRequest } from '../../../../types/Converter';
 import { ConverterInfo } from '../../../../types/Settings';
 import { EmptyResonator } from '../../../../types/EmptyResonator';
 import { useSelector } from 'react-redux'
@@ -19,6 +19,7 @@ import { selectPointsOnScreen, selectHubConnectionId } from '../../../../store/c
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
+import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 
 type OwnProps = {
     results: Result[];
@@ -87,17 +88,12 @@ const ResultSection: React.FC<Props> = ({results}) => {
 
     const handleInsertObject = async() => {
         const newIsObjectInside = !IsObjectInside;
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'connectionId': connectionId, 'IsObjectInside': newIsObjectInside })
-        };
+        const request = createRequestObject(
+            'POST',
+            'https://localhost:44353/api/Home/PutOnOfObject',
+            JSON.stringify({ 'connectionId': connectionId, 'IsObjectInside': newIsObjectInside }));
         seIsObjectInside(newIsObjectInside);
-        return await fetch('https://localhost:44353/api/Home/PutOnOfObject', requestOptions)
-            .then(response => response.json())
-            .catch((error) => {
-                console.error('Error:', error);
-              });
+        return await apiCall(request);              
     }
 
     return (

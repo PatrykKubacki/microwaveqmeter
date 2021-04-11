@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { selectHubConnectionId, selectViewportMinimum } from '../../../../store/chartDataReducer';
+// import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
+import { selectViewportMinimum } from '../../../../store/chartDataReducer';
 import CanvasJSReact from '../../../../assets/canvasjs.react';
 let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -37,28 +38,20 @@ const initialOptions = {
 
 const GraphSection = ({ chartData }) => {
     const [options, setOptions] = useState(initialOptions);
-    const connectionId = useSelector(selectHubConnectionId);
+    // const connectionId = useSelector(selectHubConnectionId);
     const viewportMinimum = useSelector(selectViewportMinimum);
 
     // const handleRangeChange = (e) => {
     //     if(e.axisX[0].viewportMinimum !== null && e.axisX[0].viewportMaximum)
     //     {
-    //         const requestOptions = {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify({ 
-    //             'connectionId': connectionId,
-    //             'start': e.axisX[0].viewportMinimum.toString().replace('.',','),
-    //             'stop': e.axisX[0].viewportMaximum.toString().replace('.',',') })
-    //         };
-    //     fetch('https://localhost:44353/api/Home/SetStartStopRangeFrequency', requestOptions)
-    //         .then(response => response.json())
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    //     }
-    //  }
-
+        // const request = createRequestObject(
+        //     'POST',
+        //     'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
+        //     JSON.stringify({ 
+        //                     'connectionId': connectionId,
+        //                     'start': e.axisX[0].viewportMinimum.toString().replace('.',','),
+        //                     'stop': e.axisX[0].viewportMaximum.toString().replace('.',',') }));
+        // return apiCall(request); 
     //  useEffect(() => {
     //     let newOptions = {...options};
     //     newOptions.rangeChanged = handleRangeChange;
@@ -70,9 +63,9 @@ const GraphSection = ({ chartData }) => {
         let data = [];
         let dataSeries = { type: 'line', dataPoints:[...chartData.points]}
         let dataLorenzeCurve = { type: 'line', dataPoints:[...chartData.lorenzeCurve]}
-        //data.push(dataSeries);
-        //data.push(dataLorenzeCurve);
         data.push(dataSeries);
+        data.push(dataLorenzeCurve);
+       // data.push(dataSeries);
         newOptions.data = data;
 
         if(viewportMinimum !== 0){
