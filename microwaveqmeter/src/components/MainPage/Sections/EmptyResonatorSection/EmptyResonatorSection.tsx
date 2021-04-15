@@ -4,7 +4,7 @@ import { Button, TextField, Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux'
 import { ResultBackend } from '../../../../types/Result';
 import { EmptyResonator } from '../../../../types/EmptyResonator';
-import { selectCurrentResult } from '../../../../store/resultReducer';
+import { selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { useDispatch } from 'react-redux';
 import {
     setQFactor,
@@ -15,7 +15,7 @@ import {
 } from '../../../../store/resonatorReducer';
 
 const EmptyResonatorSection: React.FC = () => {
-    const currentResult: ResultBackend = useSelector(selectCurrentResult);
+    const currentResult: ResultBackend = useSelector(selectActiveCurrentResult);
     const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
     const dispatch = useDispatch();
 

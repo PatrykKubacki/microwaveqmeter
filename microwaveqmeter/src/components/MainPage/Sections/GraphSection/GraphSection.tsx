@@ -18,7 +18,7 @@ type ChartData = {
     startFrequency: number;
     stopFrequency: number;
     pointsOnScreen: number;
-    qFactorResult: ResultBackend;
+    qFactorResults: ResultBackend[];
     maximums: MaximumOnChart[];
     minimumPointValue: number;
     lorenzeCurve: Point[]
@@ -32,13 +32,13 @@ const initialChartData = {
     pointsOnScreen: 0,
     minimumPointValue: 0,
     lorenzeCurve:[],
-    qFactorResult: {
+    qFactorResults: [{
         Q_factor: 0,
         CenterFrequency: 0,
         Bandwidth: 0,
         PeakTransmittance: 0,
         CenterFrequencyDifference: 0,
-    }
+    }],
 }
 
 const GraphSection: React.FC = () => {
@@ -99,11 +99,11 @@ const GraphSection: React.FC = () => {
                 minimumPointValue: chartData.minimumPointValue,
             }
             dispatch(setChartDataAction(data));
-            dispatch(setCurrentResult(chartData.qFactorResult))
+            dispatch(setCurrentResult(chartData.qFactorResults))
         }
 
         setChartDataReduxState();
-    },[chartData.minimumPointValue,chartData.qFactorResult, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen,chartData.maximums, dispatch])
+    },[chartData.minimumPointValue,chartData.qFactorResults, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen,chartData.maximums, dispatch])
 
     return (
     <div>

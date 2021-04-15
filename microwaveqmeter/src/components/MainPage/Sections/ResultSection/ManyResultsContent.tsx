@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { Result } from '../../../../types/Result';
+import React from 'react';
+import { ResultBackend } from '../../../../types/Result';
+import { useSelector } from 'react-redux'
+import { selectIndexOfCurrentResult, setIndexOfCurrentResult } from '../../../../store/resultReducer';
+import { selectEmptyResonatorCenterFrequency } from '../../../../store/resonatorReducer';
+import { useDispatch } from 'react-redux';
 import {
    TableContainer,
    Table, 
@@ -11,14 +15,21 @@ import {
    Paper } from '@material-ui/core';
 
 type ManyModeProps = {
-    results: Result[];
+    results: ResultBackend[];
 }
 
 const ManyResultsContent: React.FC<ManyModeProps> = ({ results }) => {
-    const [activeRadio, setActiveRadio] = useState('radio_0');
-    const changeHandle = (value:  string) => {
-        setActiveRadio(value);
-        };
+    const dispatch = useDispatch();
+    const activeRadio: number = useSelector(selectIndexOfCurrentResult);
+    const emptyResonatorCenterFrequency = useSelector(selectEmptyResonatorCenterFrequency); 
+
+    const getCenterFrequencyDifference = (centerFrequency: number) => {
+        const emptResonatorCenterFrequency = isNaN(emptyResonatorCenterFrequency) ? 0 : emptyResonatorCenterFrequency; 
+        let centerFrequencyDiff = centerFrequency - emptResonatorCenterFrequency;
+        centerFrequencyDiff = Math.round((centerFrequencyDiff) * 1000) / 1000;
+        return isNaN(centerFrequencyDiff) ? 0 : centerFrequencyDiff.toString();
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -34,13 +45,13 @@ const ManyResultsContent: React.FC<ManyModeProps> = ({ results }) => {
                 return (
                     <TableRow key={index}>
                         <TableCell >
-                            <Radio key={index} checked={`radio_${index}` === activeRadio} value={`radio_${index}`} onChange={()=>changeHandle(`radio_${index}`)}/>
+                            <Radio key={index} checked={index === activeRadio} value={index} onChange={()=> dispatch(setIndexOfCurrentResult(index))}/>
                          </TableCell>
                          <TableCell component="th" scope="row">
-                            {result.q}
+                            {result.Q_factor}
                          </TableCell>
                          <TableCell>
-                            {result.frequencyDifference}
+                            {getCenterFrequencyDifference(result.CenterFrequency)}
                          </TableCell>
                     </TableRow>
                 )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Section from '../Section/Section';
-import { Result, ResultBackend } from '../../../../types/Result';
+import { ResultBackend } from '../../../../types/Result';
 import { GetConverterResultRequest } from '../../../../types/Converter';
 import { ConverterInfo } from '../../../../types/Settings';
 import { EmptyResonator } from '../../../../types/EmptyResonator';
@@ -14,61 +14,53 @@ import {
     Grid,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { saveResult, selectCurrentResult } from '../../../../store/resultReducer';
+import { saveResult, selectCurrentResult, selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { selectPointsOnScreen, selectHubConnectionId } from '../../../../store/chartDataReducer';
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 
-type OwnProps = {
-    results: Result[];
-}
-type Props =  OwnProps;
-
-const ResultSection: React.FC<Props> = ({results}) => {
-    const [manyResonanceMode, setManyResonanceMode] = useState(false);
+const ResultSection: React.FC = () => {
     const [IsObjectInside, seIsObjectInside] = useState(false);
     const [resultName, setResultName] = useState('');
     const [h, setH] = useState('');
 
     const connectionId: string = useSelector(selectHubConnectionId);
-    const resultFromRedux: ResultBackend = useSelector(selectCurrentResult);
+    const resultFromRedux: ResultBackend[] = useSelector(selectCurrentResult);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const converterInfo: ConverterInfo = useSelector(selectConverterInfo);
     const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
+    const activeResult: ResultBackend = useSelector(selectActiveCurrentResult);
     const dispatch = useDispatch();
+
     const handleSaveResultButton = async() => {
         const getConverterResultRequest: GetConverterResultRequest = {
             ResonatorName: converterInfo.resonatorName,
             ResonatorType: converterInfo.resonatorType,
             H: h !== '' ? h :'0.0',
-            CenterFrequency: resultFromRedux.CenterFrequency.toString(),
-            QFactor: resultFromRedux.Q_factor.toString(),
+            CenterFrequency: activeResult.CenterFrequency.toString(),
+            QFactor: activeResult.Q_factor.toString(),
             UnloadedCenterFrequency: emptyResonator.centerFrequency.toString(),
             UnloadedQ: emptyResonator.qFactor.toString(),
         };
         const converterResult = await getConverterResult(getConverterResultRequest);
         let result = {    
             sampleName: resultName !== '' ? resultName : 'Default Sample Name',
-            frequencyDifference: resultFromRedux.CenterFrequencyDifference,
+            frequencyDifference: activeResult.CenterFrequencyDifference,
             h: h !== '' ? h :'0.0',
             permittivity: converterResult && converterResult.Permittivity !== undefined ? converterResult.Permittivity: '',
             dielLossTangent: converterResult && converterResult.DielectricLossTangent !== undefined ? converterResult.DielectricLossTangent: '',
             resistivity: converterResult && converterResult.Resistivity !== undefined ? converterResult.Resistivity: '',
             sheetResistance: converterResult && converterResult.SheetRessistance !== undefined ? converterResult.SheetRessistance: '',
-            f0: resultFromRedux.CenterFrequency,
-            q: resultFromRedux.Q_factor,
-            bw: resultFromRedux.Bandwidth,
-            peak: resultFromRedux.PeakTransmittance,
+            f0: activeResult.CenterFrequency,
+            q: activeResult.Q_factor,
+            bw: activeResult.Bandwidth,
+            peak: activeResult.PeakTransmittance,
             points: pointsOnScreen,
         }
                                  
         dispatch(saveResult(result));
-    }
-
-    const changeMode = () => {
-        setManyResonanceMode(!manyResonanceMode);
     }
 
     const getConverterResult = async (body: GetConverterResultRequest) => {
@@ -98,9 +90,9 @@ const ResultSection: React.FC<Props> = ({results}) => {
 
     return (
         <Section title={'Result'}>
-            {!manyResonanceMode ? (
-            <><ResultContent result={results[0]} resultFromRedux={resultFromRedux} pointsOnScreen={pointsOnScreen}/> <br/>
-            </>):(<ManyResultsContent results={results}/>)}
+            {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
+            <><ResultContent result={resultFromRedux[0]} pointsOnScreen={pointsOnScreen}/> <br/>
+            </>):(<ManyResultsContent results={resultFromRedux}/>)}
             <br/>
             <Grid container>
                 <Grid item xs={9}>
@@ -129,12 +121,6 @@ const ResultSection: React.FC<Props> = ({results}) => {
                     </Button>
                 </Grid> 
             </Grid> <br/>
-                    <Button variant="contained" 
-                            color="secondary" 
-                            size='small'
-                            onClick={changeMode}>
-                        {'temporary button change mode'}
-                    </Button>   <br/><br/>
                     <Button variant="contained" 
                             color="secondary" 
                             size='small'

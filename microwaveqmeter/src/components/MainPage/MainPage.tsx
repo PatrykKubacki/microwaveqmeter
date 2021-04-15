@@ -6,7 +6,6 @@ import {
     SavedResultsSections, 
     GraphSection,
 } from './Sections';
-import { Result } from '../../types/Result';
 import { SavedResult } from '../../types/SavedResult';
 import styles from './MainPage.module.css';
 import { Grid } from '@material-ui/core';
@@ -42,25 +41,6 @@ const savedResults: SavedResult[] = [
     }
 ]
 
-const results: Result[] = [
-    {
-        q: '9789',
-        frequencyDifference: '1183.3',
-        f0: '5123.960',
-        bw: '0.5344',
-        peak: '-33.9',
-        points: '529',
-    },
-    {    
-        q: '2789',
-        frequencyDifference: '183.3',
-        f0: '5623.960',
-        bw: '0.4644',
-        peak: '-20.9',
-        points: '892',
-    }
-]
-
 const MainPage: React.FC = () => {
     return (
         <>
@@ -72,7 +52,7 @@ const MainPage: React.FC = () => {
                  <Grid item xs={12}>
                      <div className={styles.divek}>
                          <div className={styles.quarterElement}>
-                             <ResultSection results={results} />
+                             <ResultSection />
                          </div>
                         <div className={styles.grapf}>
                             <GraphSection/>

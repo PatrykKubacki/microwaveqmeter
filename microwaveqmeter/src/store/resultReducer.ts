@@ -2,20 +2,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import { SavedResult } from '../types/SavedResult';
 import { ResultBackend } from '../types/Result';
 
+const initialQfactorResult = {
+  Q_factor: 0,
+  CenterFrequency: 0,
+  CenterFrequencyDifference: 0,
+  Bandwidth: 0,
+  PeakTransmittance: 0
+}
+
 type ResultState = {
-    currentResult: ResultBackend;
+    activeResult: ResultBackend;
+    currentResult: ResultBackend[];
     currentResults: SavedResult[];
+    indexOfCurrentResult: number;
 }
 
 const initialState: ResultState = {
-    currentResult: {
-      Q_factor: 0,
-      CenterFrequency: 0,
-      CenterFrequencyDifference: 0,
-      Bandwidth: 0,
-      PeakTransmittance: 0,
-    },
+    activeResult: initialQfactorResult,
+    currentResult: [ initialQfactorResult ],
     currentResults: [],
+    indexOfCurrentResult: 0,
 }
 
 export const resultSlice = createSlice({
@@ -23,23 +29,45 @@ export const resultSlice = createSlice({
     initialState: initialState,
     reducers: {
       setCurrentResult: (state, action) => {
-        state.currentResult = {
-          Q_factor: Math.round(action.payload.q_factor * 1000) / 1000,
-          CenterFrequency: Math.round((action.payload.centerFrequency/1000000) * 1000) / 1000,
-          Bandwidth: Math.round((action.payload.bandwidth/1000000) * 1000) / 1000,
-          PeakTransmittance: Math.round(action.payload.peakTransmittance * 1000) / 1000,
-          CenterFrequencyDifference: Math.round((((action.payload.centerFrequency -10000) /1000000)) * 1000 ) / 1000,
-        }
+        const mappedResultBackend = mapCurrentResult(action.payload);
+        const index = state.indexOfCurrentResult <= (mappedResultBackend.length - 1) ? state.indexOfCurrentResult : 0;
+        state.indexOfCurrentResult = index;
+        state.currentResult = mappedResultBackend;
+        state.activeResult = mappedResultBackend[index];
       },
       saveResult: (state, action) => {
-        state.currentResults = [...state.currentResults, action.payload]
+        state.currentResults = [...state.currentResults, action.payload];
+      },
+      setIndexOfCurrentResult: (state, action) => {
+        state.indexOfCurrentResult = action.payload;
       }
     }
   })
+
+  const mapCurrentResult = (payload: any) => {
+    var result = [];
+
+    for (const qFactorResult of payload) {
+      const qFactorState = mapQFactorResult(qFactorResult);
+      result.push(qFactorState)
+    }
+
+    return result;
+  }
   
-  export const { saveResult, setCurrentResult } = resultSlice.actions;
+  const mapQFactorResult = (qFactorBackend: any) => ({
+    Q_factor: Math.round(qFactorBackend.q_factor * 1000) / 1000,
+    CenterFrequency: Math.round((qFactorBackend.centerFrequency/1000000) * 1000) / 1000,
+    Bandwidth: Math.round((qFactorBackend.bandwidth/1000000) * 1000) / 1000,
+    PeakTransmittance: Math.round(qFactorBackend.peakTransmittance * 1000) / 1000,
+    CenterFrequencyDifference: Math.round((((qFactorBackend.centerFrequency -10000) /1000000)) * 1000 ) / 1000,
+  })
+
+  export const { saveResult, setCurrentResult, setIndexOfCurrentResult } = resultSlice.actions;
   
   export const selectCurrentResults = (state: any) => state.result.currentResults;
   export const selectCurrentResult = (state: any) => state.result.currentResult;
+  export const selectActiveCurrentResult = (state: any) => state.result.activeResult;
+  export const selectIndexOfCurrentResult = (state: any) => state.result.indexOfCurrentResult;
 
   export default resultSlice.reducer
