@@ -21,7 +21,7 @@ type ChartData = {
     qFactorResults: ResultBackend[];
     maximums: MaximumOnChart[];
     minimumPointValue: number;
-    lorenzeCurve: Point[]
+    lorenzeCurves: Point[][];
 }
 
 const initialChartData = {
@@ -31,7 +31,7 @@ const initialChartData = {
     stopFrequency: 0,
     pointsOnScreen: 0,
     minimumPointValue: 0,
-    lorenzeCurve:[],
+    lorenzeCurves:[],
     qFactorResults: [{
         Q_factor: 0,
         CenterFrequency: 0,

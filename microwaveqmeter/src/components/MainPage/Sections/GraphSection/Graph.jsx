@@ -62,10 +62,13 @@ const GraphSection = ({ chartData }) => {
         let newOptions = {...initialOptions};
         let data = [];
         let dataSeries = { type: 'line', dataPoints:[...chartData.points]}
-        let dataLorenzeCurve = { type: 'line', dataPoints:[...chartData.lorenzeCurve]}
         data.push(dataSeries);
-        data.push(dataLorenzeCurve);
-       // data.push(dataSeries);
+
+        for (const lorenzeCurve of chartData.lorenzeCurves) {
+            const dataLorenzeCurve = { type: 'line', dataPoints:[...lorenzeCurve], color: "red",}
+            data.push(dataLorenzeCurve);
+        }
+
         newOptions.data = data;
 
         if(viewportMinimum !== 0){
