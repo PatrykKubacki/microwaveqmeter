@@ -1,6 +1,5 @@
 import React from 'react';
-import Section from '../Section/Section';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Button, TextField, Grid, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux'
 import { ResultBackend } from '../../../../types/Result';
 import { EmptyResonator } from '../../../../types/EmptyResonator';
@@ -29,7 +28,8 @@ const EmptyResonatorSection: React.FC = () => {
     }   
 
     return (
-        <Section title={'Empty Resonator'}>
+        <>
+            <Typography variant="h6">{'Empty Resonator'}</Typography><br/>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField label="Q Factor" 
@@ -65,8 +65,7 @@ const EmptyResonatorSection: React.FC = () => {
                     </Button>
                 </Grid> 
             </Grid>
-
-    </Section>
+            </>
     )
 }
 

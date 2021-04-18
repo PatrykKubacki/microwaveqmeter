@@ -11,14 +11,14 @@ type Props = {
 
 const LabelDataWithGrid: React.FC<Props> = ({label, value, bold, doubleSize}) => {
     return (
-        <>
-            <Grid item xs={7}>
+        <Grid container>
+            <Grid item xs={7} xl={6}>
                 <Label bold={bold} doubleSize={doubleSize} value={`${label}: `} />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={5} xl={4}>
                 <Label bold={bold} doubleSize={doubleSize} value={value} />
             </Grid>
-         </>
+         </Grid>
     )
 }
 

@@ -1,14 +1,8 @@
-.divek {
-    display: inline-block;
-}
 
-.quarterElement {
-    width: 34%;
-    display: inline-block;
-}
-
-.grapf {
-    position: absolute;
-    width: 65%;
-    display: inline-block;
-}
+.wrapper {
+    display: flex;
+  }
+  
+.graphSection {
+    flex: 1;
+} 

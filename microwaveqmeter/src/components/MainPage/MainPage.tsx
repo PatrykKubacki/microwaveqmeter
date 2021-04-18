@@ -1,8 +1,6 @@
 import React from 'react';
 import { 
-    ActionsSection, 
     ResultSection, 
-    EmptyResonatorSection,
     SavedResultsSections, 
     GraphSection,
 } from './Sections';
@@ -45,28 +43,21 @@ const MainPage: React.FC = () => {
     return (
         <>
             <br/>
-            <Grid container>
-                <Grid item xs={12}>
-                    <ActionsSection />
-                </Grid>
+            <Grid container spacing={3}>
                  <Grid item xs={12}>
-                     <div className={styles.divek}>
-                         <div className={styles.quarterElement}>
-                             <ResultSection />
-                         </div>
-                        <div className={styles.grapf}>
+                     <div className={styles.wrapper}>
+                        <div className={styles.graphSection}>
                             <GraphSection/>
-                        </div> <br/>
-                        <div className={styles.quarterElement}>
-                            <EmptyResonatorSection/>
                         </div>
-                     </div>
-                </Grid>
-                <Grid item xs={12}>
-                    <SavedResultsSections savedResults={savedResults}/>
-                </Grid>
+                    </div>
+                </Grid><br/><br/><br/>
+                    <Grid item xs={4} xl={2}>
+                        <ResultSection/>
+                    </Grid>
+                    <Grid item xs={7} xl={9}>
+                        <SavedResultsSections savedResults={savedResults}/>
+                    </Grid>
             </Grid>
-            
         </>
     )
 }

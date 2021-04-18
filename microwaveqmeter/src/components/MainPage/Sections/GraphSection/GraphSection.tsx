@@ -5,6 +5,9 @@ import { setCurrentResult } from '../../../../store/resultReducer';
 import { ResultBackend } from '../../../../types/Result';
 import { MaximumOnChart } from '../../../../types/Chart';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
+import GraphActions from './GraphActions';
+import GraphSwipeInputs from './GraphSwipeInputs';
+import styles from './GraphSection.module.css';
 import Graph from './Graph';
 import * as SignalR from '@microsoft/signalr';
 
@@ -107,6 +110,10 @@ const GraphSection: React.FC = () => {
 
     return (
     <div>
+        <div className={styles.actionPanel}>
+            <GraphActions />
+            <GraphSwipeInputs />
+        </div>
         <Graph chartData={chartData}/>
     </div>)
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Section from '../Section/Section';
 import { ResultBackend } from '../../../../types/Result';
 import { GetConverterResultRequest } from '../../../../types/Converter';
 import { ConverterInfo } from '../../../../types/Settings';
@@ -12,6 +11,9 @@ import {
     Button,
     TextField,
     Grid,
+    Card,
+    CardContent,
+    Typography
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { saveResult, selectCurrentResult, selectActiveCurrentResult } from '../../../../store/resultReducer';
@@ -20,6 +22,7 @@ import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
+import {    EmptyResonatorSection } from '../../Sections';
 
 const ResultSection: React.FC = () => {
     const [IsObjectInside, seIsObjectInside] = useState(false);
@@ -89,13 +92,16 @@ const ResultSection: React.FC = () => {
     }
 
     return (
-        <Section title={'Result'}>
+        <Card>
+            <CardContent>
+             <Typography variant="h6">{'Result'}</Typography>
             {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
-            <><ResultContent result={resultFromRedux[0]} pointsOnScreen={pointsOnScreen}/> <br/>
+            <><ResultContent result={resultFromRedux[0]} pointsOnScreen={pointsOnScreen}/>
             </>):(<ManyResultsContent results={resultFromRedux}/>)}
             <br/>
             <Grid container>
-                <Grid item xs={9}>
+                <Grid container>
+                    <Grid item xs={12} xl={12}>
                     <div className={styles.merginBottom} >
                         <TextField label="h [mm]" 
                                variant="outlined"
@@ -104,15 +110,15 @@ const ResultSection: React.FC = () => {
                                value={h}
                                onChange={(e) => setH(e.target.value)}/>
                     </div>
-                </Grid>
-                <Grid item xs={9}>
+                </Grid></Grid>
+                <Grid item xs={9} xl={9}>
                     <TextField label="Name" 
                                variant="outlined" 
                                size='small'
                                value={resultName}
                                onChange={(e) => setResultName(e.target.value)}/>
                 </Grid>
-                <Grid item xs={3} >
+                <Grid item xs={3} xl={3}>
                     <Button variant="contained" 
                             color="primary" 
                             size='large'
@@ -127,7 +133,9 @@ const ResultSection: React.FC = () => {
                             onClick={handleInsertObject}>
                         {'temporary button insert object'}
                     </Button>
-        </Section>
+                    <EmptyResonatorSection />
+            </CardContent>
+        </Card>
     )
 }
 

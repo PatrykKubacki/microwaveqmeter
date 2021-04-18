@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Section from '../Section/Section';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
     selectStartFrequency,
     selectStopFrequency,
@@ -10,10 +9,9 @@ import {
     setViewportMinimum,
 } from '../../../../store/chartDataReducer';
 import { selectCurrentResult } from '../../../../store/resultReducer';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Button, TextField, Grid, ButtonGroup, Card, CardContent, Typography } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
 import { ResultBackend } from '../../../../types/Result';
-import { useDispatch } from 'react-redux';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 
 const ActionsSection: React.FC = () => {
@@ -108,56 +106,47 @@ const ActionsSection: React.FC = () => {
     }
 
     return (
-        <Section title={'Graph settings and actions'}>
-            <Grid container spacing={1}>
-                <Grid item xs={2}>
-                    <Button variant="contained" 
-                            color="primary" 
-                            size='large'
-                            onClick={handleAutoCenter}>
+        <Card>
+            <CardContent>
+            <Typography variant="h6">{'Graph actions & swap settings'}</Typography><br/>
+            <Grid container spacing={1} justify="center" alignItems="center" direction="column">
+                <Grid item >
+                <ButtonGroup  color="primary" size="small">
+                    <Button onClick={handleAutoCenter}>
                         {'Autocenter'}
                     </Button>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button variant="contained" 
-                            color="primary" 
-                            size='large'
-                            onClick={handleAutoScale}>
+                    <Button onClick={handleAutoScale}>
                         {'Autoscale'}
                     </Button>
-                </Grid>
-                <Grid item xs={2}>
-                    <Button variant="contained" 
-                            color="primary" 
-                            size='large'
-                            onClick={handleUnZoomFull}>
+                    <Button onClick={handleUnZoomFull}>
                         {'Un-zoom full'}
                     </Button>
-                </Grid>
-                <Grid item xs={2}>
+                </ButtonGroup>
+                </Grid><br/>
+                <Grid item >
                     <TextField label="Start [Mhz]" 
                                variant="outlined" 
                                size='small'
                                onChange={(e) =>setStartFrequencyState(e.target.value)}
                                value={startFrequencyState}/>
-                </Grid>
-                <Grid item xs={2}>
+                </Grid><br/>
+                <Grid item >
                     <TextField label="Stop [Mhz]" 
                                variant="outlined" 
                                size='small'
                                onChange={(e) => setStopFrequencyState(e.target.value)}
                                value={stopFrequencyState}/>
-                </Grid>
-                <Grid item xs={2}>
+                </Grid><br/>
+                <Grid item>
                     <TextField label="Points on screen" 
                                variant="outlined" 
                                size='small'
                                onChange={(e) => setPointsOnScreenState(e.target.value)}
                                value={pointsOnScreenState}/>
+                    </Grid>
                 </Grid>
-
-            </Grid>
-        </Section>
+            </CardContent>
+        </Card>
     )
 }
 
