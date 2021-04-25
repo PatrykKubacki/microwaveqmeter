@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
     selectStartFrequency,
     selectStopFrequency,
     selectPointsOnScreen,
     selectHubConnectionId,
+    selectDisplayFitErrorCurve,
+    setDisplayFitErrorCurve
 } from '../../../../store/chartDataReducer';
 import styles from './GraphSwipeInputs.module.css';
 
@@ -18,6 +20,8 @@ const GraphSwipeInputs: React.FC = () => {
     const stopFrequency: number = useSelector(selectStopFrequency);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const connectionId: string = useSelector(selectHubConnectionId);
+    const displayFitErrorCurve: boolean = useSelector(selectDisplayFitErrorCurve);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setStartFrequencyState(startFrequency.toString());
@@ -70,8 +74,18 @@ const GraphSwipeInputs: React.FC = () => {
         return () => clearTimeout(timeOutId);
       }, [pointsOnScreenState, connectionId]);
 
+      const handleDisplayFitErrorCurveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(setDisplayFitErrorCurve(e.target.checked));
+      }
+
     return ( 
         <div className={styles.self}>
+             <FormControlLabel label="Fit error curve" 
+                               control={<Checkbox checked={displayFitErrorCurve}
+                                                  onChange={handleDisplayFitErrorCurveChange}
+                                                  name="checkedB"
+                                                  color="primary" />}
+            />
             <TextField label="Start [Mhz]" 
                        variant="outlined" 
                        size='small'

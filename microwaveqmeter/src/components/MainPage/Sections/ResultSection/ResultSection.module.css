@@ -1,3 +1,7 @@
 .merginBottom {
     margin-bottom: 12px;
 }
+
+.isFitError {
+    color: red;
+}

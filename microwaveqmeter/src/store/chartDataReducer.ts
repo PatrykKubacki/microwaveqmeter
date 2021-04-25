@@ -9,6 +9,8 @@ type ChartDataState = {
     maximums: MaximumOnChart[];
     viewportMinimum: number;
     minimumPointValue: number;
+    displayFitErrorCurve: boolean;
+    isFitError: boolean;
 }
 
 const initialState: ChartDataState = {
@@ -19,6 +21,8 @@ const initialState: ChartDataState = {
     maximums: [],
     viewportMinimum: 0,
     minimumPointValue: 0,
+    displayFitErrorCurve: false,
+    isFitError: false,
 }
 
 export const chartDataSlice = createSlice({
@@ -31,17 +35,21 @@ export const chartDataSlice = createSlice({
             state.pointsOnScreen = action.payload.pointsOnScreen;
             state.maximums = action.payload.maximums
             state.minimumPointValue = action.payload.minimumPointValue
+            state.isFitError = action.payload.isFitError;
         },
         setHubConnectionId: (state, action) => {
             state.hubConnectionId = action.payload;
         },
         setViewportMinimum: (state) => {
             state.viewportMinimum = (state.minimumPointValue-20);
+        },
+        setDisplayFitErrorCurve: (state, action) => {
+            state.displayFitErrorCurve = action.payload;
         }
     }
 })
 
-export const { setChartData, setHubConnectionId, setViewportMinimum } = chartDataSlice.actions;
+export const { setChartData, setHubConnectionId, setViewportMinimum, setDisplayFitErrorCurve } = chartDataSlice.actions;
 
 export const selectStartFrequency = (state: any) => state.chartData.startFrequency;
 export const selectStopFrequency = (state: any) => state.chartData.stopFrequency;
@@ -49,5 +57,7 @@ export const selectPointsOnScreen = (state: any) => state.chartData.pointsOnScre
 export const selectHubConnectionId = (state: any) => state.chartData.hubConnectionId;
 export const selectMaximums = (state: any) => state.chartData.maximums;
 export const selectViewportMinimum = (state: any) => state.chartData.viewportMinimum;
+export const selectDisplayFitErrorCurve = (state: any) => state.chartData.displayFitErrorCurve;
+export const selectIsFitError = (state: any) => state.chartData.isFitError;
 
 export default chartDataSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
-import { selectViewportMinimum } from '../../../../store/chartDataReducer';
+import { selectViewportMinimum, selectDisplayFitErrorCurve } from '../../../../store/chartDataReducer';
 import CanvasJSReact from '../../../../assets/canvasjs.react';
 let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -33,6 +33,9 @@ const initialOptions = {
         gridDashType: "dot",
         gridThickness: 2
     },
+    axisY2: {
+        title: "",  
+    },
     data: initialData
 }
 
@@ -40,6 +43,7 @@ const GraphSection = ({ chartData }) => {
     const [options, setOptions] = useState(initialOptions);
     // const connectionId = useSelector(selectHubConnectionId);
     const viewportMinimum = useSelector(selectViewportMinimum);
+    const displayFitErrorCurve = useSelector(selectDisplayFitErrorCurve);
 
     // const handleRangeChange = (e) => {
     //     if(e.axisX[0].viewportMinimum !== null && e.axisX[0].viewportMaximum)
@@ -69,6 +73,13 @@ const GraphSection = ({ chartData }) => {
             data.push(dataLorenzeCurve);
         }
 
+        if(displayFitErrorCurve){
+            for (const fitCurve of chartData.fitCurves) {
+                const dataFitCurve = { type: 'line', dataPoints:[...fitCurve], color: "green",  axisYType: "secondary"}
+                data.push(dataFitCurve);
+            }   
+        }
+
         newOptions.data = data;
 
         if(viewportMinimum !== 0){
@@ -77,7 +88,7 @@ const GraphSection = ({ chartData }) => {
 
         setOptions(newOptions);
 
-    },[chartData, viewportMinimum]);
+    },[chartData, viewportMinimum, displayFitErrorCurve]);
 
     return (
         <>
