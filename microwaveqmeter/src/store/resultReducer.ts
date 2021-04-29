@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SavedResult } from '../types/SavedResult';
 import { ResultBackend } from '../types/Result';
+import { formatQFactor } from '../formatters/formatQFactor';
 
 const initialQfactorResult = {
   Q_factor: 0,
@@ -57,10 +58,10 @@ export const resultSlice = createSlice({
   }
   
   const mapQFactorResult = (qFactorBackend: any) => ({
-    Q_factor: Math.round(qFactorBackend.q_factor * 1000) / 1000,
+    Q_factor: formatQFactor(qFactorBackend.q_factor),
     CenterFrequency: Math.round((qFactorBackend.centerFrequency/1000000) * 1000) / 1000,
     Bandwidth: Math.round((qFactorBackend.bandwidth/1000000) * 1000) / 1000,
-    PeakTransmittance: Math.round(qFactorBackend.peakTransmittance * 1000) / 1000,
+    PeakTransmittance: Math.round(qFactorBackend.peakTransmittance * 10) / 10,
     CenterFrequencyDifference: Math.round((((qFactorBackend.centerFrequency -10000) /1000000)) * 1000 ) / 1000,
   })
 
