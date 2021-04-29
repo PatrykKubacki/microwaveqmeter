@@ -47,11 +47,12 @@ export const resultSlice = createSlice({
   const mapCurrentResult = (payload: any) => {
     var result = [];
 
-    for (const qFactorResult of payload) {
-      const qFactorState = mapQFactorResult(qFactorResult);
-      result.push(qFactorState)
+    if(payload) { 
+      for (const qFactorResult of payload) {
+        const qFactorState = mapQFactorResult(qFactorResult);
+        result.push(qFactorState)
+      }
     }
-
     return result;
   }
   

@@ -68,12 +68,14 @@ const GraphSection = ({ chartData }) => {
         let dataSeries = { type: 'line', dataPoints:[...chartData.points]}
         data.push(dataSeries);
 
-        for (const lorenzeCurve of chartData.lorenzeCurves) {
-            const dataLorenzeCurve = { type: 'line', dataPoints:[...lorenzeCurve], color: "red",}
-            data.push(dataLorenzeCurve);
+        if(chartData.lorenzeCurves) {
+            for (const lorenzeCurve of chartData.lorenzeCurves) {
+                const dataLorenzeCurve = { type: 'line', dataPoints:[...lorenzeCurve], color: "red",}
+                data.push(dataLorenzeCurve);
+            }
         }
 
-        if(displayFitErrorCurve){
+        if(displayFitErrorCurve && chartData.fitCurves !== undefined && chartData.fitCurves.length > 0){
             for (const fitCurve of chartData.fitCurves) {
                 const dataFitCurve = { type: 'line', dataPoints:[...fitCurve], color: "green",  axisYType: "secondary"}
                 data.push(dataFitCurve);

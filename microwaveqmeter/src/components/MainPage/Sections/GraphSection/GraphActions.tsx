@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ButtonGroup} from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectHubConnectionId, setViewportMinimum, selectMaximums } from '../../../../store/chartDataReducer';
-import { selectCurrentResult } from '../../../../store/resultReducer';
+import { selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { ResultBackend } from '../../../../types/Result';
 import { MaximumOnChart } from '../../../../types/Chart';
@@ -10,7 +10,7 @@ import styles from './GraphActions.module.css';
 
 const GraphActions: React.FC = () => {
     const connectionId: string = useSelector(selectHubConnectionId);
-    const currentResult: ResultBackend = useSelector(selectCurrentResult);
+    const activeCurrentResult: ResultBackend = useSelector(selectActiveCurrentResult);
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
     const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ const GraphActions: React.FC = () => {
     }
 
     const handleAutoCenter = () => {
-        const bandwidthX3 = currentResult.Bandwidth * 3;
+        const bandwidthX3 = activeCurrentResult.Bandwidth * 3;
         const start = maximums[0].frequency - bandwidthX3;
         const stop = maximums[maximums.length - 1].frequency + bandwidthX3;
 
