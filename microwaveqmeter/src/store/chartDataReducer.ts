@@ -10,7 +10,7 @@ type ChartDataState = {
     viewportMinimum: number;
     minimumPointValue: number;
     displayFitErrorCurve: boolean;
-    isFitError: boolean;
+    isFitErrors: boolean[];
 }
 
 const initialState: ChartDataState = {
@@ -22,7 +22,7 @@ const initialState: ChartDataState = {
     viewportMinimum: 0,
     minimumPointValue: 0,
     displayFitErrorCurve: false,
-    isFitError: false,
+    isFitErrors: [],
 }
 
 export const chartDataSlice = createSlice({
@@ -35,7 +35,7 @@ export const chartDataSlice = createSlice({
             state.pointsOnScreen = action.payload.pointsOnScreen;
             state.maximums = action.payload.maximums
             state.minimumPointValue = action.payload.minimumPointValue
-            state.isFitError = action.payload.isFitError;
+            state.isFitErrors = action.payload.isFitErrors;
         },
         setHubConnectionId: (state, action) => {
             state.hubConnectionId = action.payload;
@@ -58,6 +58,7 @@ export const selectHubConnectionId = (state: any) => state.chartData.hubConnecti
 export const selectMaximums = (state: any) => state.chartData.maximums;
 export const selectViewportMinimum = (state: any) => state.chartData.viewportMinimum;
 export const selectDisplayFitErrorCurve = (state: any) => state.chartData.displayFitErrorCurve;
-export const selectIsFitError = (state: any) => state.chartData.isFitError;
+export const selectIsFitErrors = (state: any) => state.chartData.isFitErrors;
+export const selectIsAnyFitErrors = (state: any) => state.chartData.isFitErrors.some((x:boolean)=>x);
 
 export default chartDataSlice.reducer;

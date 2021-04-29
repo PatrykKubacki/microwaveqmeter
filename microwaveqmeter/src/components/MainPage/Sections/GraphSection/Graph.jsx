@@ -77,7 +77,7 @@ const GraphSection = ({ chartData }) => {
 
         if(displayFitErrorCurve && chartData.fitCurves !== undefined && chartData.fitCurves.length > 0){
             for (const fitCurve of chartData.fitCurves) {
-                const dataFitCurve = { type: 'line', dataPoints:[...fitCurve], color: "green",  axisYType: "secondary"}
+                const dataFitCurve = { type: 'line', dataPoints:[...fitCurve.points], color: "green",  axisYType: "secondary"}
                 data.push(dataFitCurve);
             }   
         }

@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { saveResult, selectCurrentResult, selectActiveCurrentResult } from '../../../../store/resultReducer';
-import { selectPointsOnScreen, selectHubConnectionId, selectIsFitError } from '../../../../store/chartDataReducer';
+import { selectPointsOnScreen, selectHubConnectionId, selectIsAnyFitErrors } from '../../../../store/chartDataReducer';
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
@@ -35,7 +35,7 @@ const ResultSection: React.FC = () => {
     const converterInfo: ConverterInfo = useSelector(selectConverterInfo);
     const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
     const activeResult: ResultBackend = useSelector(selectActiveCurrentResult);
-    const isFitError: boolean = useSelector(selectIsFitError)
+    const isAnyFitErrors: boolean = useSelector(selectIsAnyFitErrors);
     const dispatch = useDispatch();
 
     const handleSaveResultButton = async() => {
@@ -96,7 +96,7 @@ const ResultSection: React.FC = () => {
         <Card>
             <CardContent>
              <Typography variant="h6">{'Result'}</Typography>
-             {isFitError && <Typography className={styles.isFitError} variant="body1">{'Possible fit error'}</Typography>}
+             {isAnyFitErrors && <Typography className={styles.isFitError} variant="body1">{'Possible fit error'}</Typography>}
             {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
             <><ResultContent result={resultFromRedux[0]} pointsOnScreen={pointsOnScreen}/>
             </>):(<ManyResultsContent results={resultFromRedux}/>)}

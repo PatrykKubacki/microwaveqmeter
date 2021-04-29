@@ -16,6 +16,11 @@ type Point = {
     y: number;
 }
 
+type FitCurve = {
+    points: Point[];
+    isFitError: boolean;
+}
+
 type ChartData = {
     points: Point[]
     startFrequency: number;
@@ -25,8 +30,7 @@ type ChartData = {
     maximums: MaximumOnChart[];
     minimumPointValue: number;
     lorenzeCurves: Point[][];
-    fitCurves: Point[][];
-    isFitError: boolean;
+    fitCurves: FitCurve[];
 }
 
 const initialChartData = {
@@ -38,7 +42,6 @@ const initialChartData = {
     minimumPointValue: 0,
     lorenzeCurves:[],
     fitCurves: [],
-    isFitError: false,
     qFactorResults: [{
         Q_factor: 0,
         CenterFrequency: 0,
@@ -104,14 +107,14 @@ const GraphSection: React.FC = () => {
                 pointsOnScreen: chartData.pointsOnScreen,
                 maximums: chartData.maximums,
                 minimumPointValue: chartData.minimumPointValue,
-                isFitError: chartData.isFitError
+                isFitErrors: chartData.fitCurves.map(x => x.isFitError),
             }
             dispatch(setChartDataAction(data));
             dispatch(setCurrentResult(chartData.qFactorResults))
         }
 
         setChartDataReduxState();
-    },[chartData.minimumPointValue,chartData.qFactorResults, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen,chartData.maximums, chartData.isFitError, dispatch])
+    },[chartData.minimumPointValue,chartData.qFactorResults, chartData.startFrequency, chartData.stopFrequency, chartData.pointsOnScreen,chartData.maximums,chartData.fitCurves, dispatch])
 
     return (
     <div>
