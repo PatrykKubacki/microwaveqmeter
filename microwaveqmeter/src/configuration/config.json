@@ -13,6 +13,12 @@
             "displayBandwidth": true,
             "displayPeakTransmittance": true,
             "displayPointsOnScreen": true
+        },
+        "fitErrorCurve": {
+            "axisY": {
+                "start": -3,
+                "stop": 3
+            }
         }
     }
 }

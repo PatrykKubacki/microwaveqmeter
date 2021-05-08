@@ -122,7 +122,9 @@ const GraphSection: React.FC = () => {
             <GraphActions />
             <GraphSwipeInputs />
         </div>
-        <Graph chartData={chartData}/>
+        <div className={styles.graphPanel}>
+           <Graph chartData={chartData}/>
+        </div>
     </div>)
 }
 

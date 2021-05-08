@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 // import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { selectViewportMinimum, selectDisplayFitErrorCurve } from '../../../../store/chartDataReducer';
 import CanvasJSReact from '../../../../assets/canvasjs.react';
+import configData from "../../../../configuration/config.json";
 let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const initialData = [{
@@ -35,6 +36,8 @@ const initialOptions = {
     },
     axisY2: {
         title: "",  
+        minimum: configData.settings.fitErrorCurve.axisY.start,
+        maximum: configData.settings.fitErrorCurve.axisY.stop
     },
     data: initialData
 }
