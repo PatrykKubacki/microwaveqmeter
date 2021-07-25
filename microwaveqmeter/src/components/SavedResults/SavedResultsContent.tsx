@@ -20,16 +20,16 @@ const SavedResultsContent: React.FC<Props> = ({item}) => {
         <div>
          <ul>
             {displayF0 && <li>
-                <LabelData label="f0" value={item.f0}/>
+                <LabelData label="f0" value={`${item.f0} Mhz`}/>
             </li>}
             {displayQFactor && <li>
                 <LabelData label="Q" value={item.q}/>
             </li>}
             {displayBandwidth && <li>
-                <LabelData label="3dB BW" value={item.bw}/>
+                <LabelData label="3dB BW" value={`${item.bw} Mhz`}/>
             </li>}
             {displayPeakTransmittance && <li>
-                <LabelData label="Peak" value={item.peak}/>
+                <LabelData label="Peak" value={`${item.peak} dB`}/>
             </li>}
             {displayPointsOnScreen && <li>
                 <LabelData label="Points" value={item.points}/>

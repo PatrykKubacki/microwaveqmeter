@@ -17,21 +17,17 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { saveResult, selectCurrentResult, selectActiveCurrentResult } from '../../../../store/resultReducer';
-import { selectPointsOnScreen, selectHubConnectionId, selectIsAnyFitErrors } from '../../../../store/chartDataReducer';
+import { selectIsAnyFitErrors } from '../../../../store/chartDataReducer';
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
-import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
-import {    EmptyResonatorSection } from '../../Sections';
+import { EmptyResonatorSection } from '../../Sections';
 
 const ResultSection: React.FC = () => {
-    const [IsObjectInside, seIsObjectInside] = useState(false);
     const [resultName, setResultName] = useState('');
     const [h, setH] = useState('');
 
-    const connectionId: string = useSelector(selectHubConnectionId);
     const resultFromRedux: ResultBackend[] = useSelector(selectCurrentResult);
-    const pointsOnScreen: number = useSelector(selectPointsOnScreen);
     const converterInfo: ConverterInfo = useSelector(selectConverterInfo);
     const emptyResonator: EmptyResonator = useSelector(selectEmptyResonator);
     const activeResult: ResultBackend = useSelector(selectActiveCurrentResult);
@@ -61,7 +57,7 @@ const ResultSection: React.FC = () => {
             q: activeResult.Q_factor,
             bw: activeResult.Bandwidth,
             peak: activeResult.PeakTransmittance,
-            points: pointsOnScreen,
+            points: activeResult.NumberOfPoints,
         }
                                  
         dispatch(saveResult(result));
@@ -82,23 +78,13 @@ const ResultSection: React.FC = () => {
               });
     }
 
-    const handleInsertObject = async() => {
-        const newIsObjectInside = !IsObjectInside;
-        const request = createRequestObject(
-            'POST',
-            'https://localhost:44353/api/Home/PutOnOfObject',
-            JSON.stringify({ 'connectionId': connectionId, 'IsObjectInside': newIsObjectInside }));
-        seIsObjectInside(newIsObjectInside);
-        return await apiCall(request);              
-    }
-
     return (
         <Card>
             <CardContent>
              <Typography variant="h6">{'Result'}</Typography>
              {isAnyFitErrors && <Typography className={styles.isFitError} variant="body1">{'Possible fit error'}</Typography>}
             {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
-            <><ResultContent result={resultFromRedux[0]} pointsOnScreen={pointsOnScreen}/>
+            <><ResultContent result={resultFromRedux[0]}/>
             </>):(<ManyResultsContent results={resultFromRedux}/>)}
             <br/>
             <Grid container>
@@ -129,12 +115,6 @@ const ResultSection: React.FC = () => {
                     </Button>
                 </Grid> 
             </Grid> <br/>
-                    <Button variant="contained" 
-                            color="secondary" 
-                            size='small'
-                            onClick={handleInsertObject}>
-                        {'temporary button insert object'}
-                    </Button>
                     <EmptyResonatorSection />
             </CardContent>
         </Card>

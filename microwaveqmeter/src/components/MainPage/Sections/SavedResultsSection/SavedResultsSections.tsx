@@ -9,8 +9,6 @@ type Props = {
    savedResults: SavedResult[]
 }
 
-const savedResultsFilesNames = ['06.01.2021.json', '05.01.2021.json'];
-
 const SavedResultsSections: React.FC<Props> = ({savedResults}) => {
     const currentSavedResults:SavedResult[] = useSelector(selectCurrentResults);
     console.log(currentSavedResults);
@@ -18,8 +16,7 @@ const SavedResultsSections: React.FC<Props> = ({savedResults}) => {
         <Card title={'Saved results'}>
             <CardContent>
                 <Typography variant="h6">{'Saved results'}</Typography><br/>
-                <SavedResults items={currentSavedResults} 
-                              savedResulsFilesNames={savedResultsFilesNames}/>
+                <SavedResults items={currentSavedResults} />
             </CardContent>
         </Card>
     )

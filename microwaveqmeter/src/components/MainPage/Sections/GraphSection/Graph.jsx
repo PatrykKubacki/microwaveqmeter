@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-// import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
+import { useDispatch, useSelector } from 'react-redux';
+import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { selectViewportMinimum, selectDisplayFitErrorCurve } from '../../../../store/chartDataReducer';
+import { setStartStopRange } from '../../../../store/graphActionsReducer';
 import CanvasJSReact from '../../../../assets/canvasjs.react';
 import configData from "../../../../configuration/config.json";
 let CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -16,7 +17,6 @@ const initialData = [{
 ] 
 
 const initialOptions = {
-    // rangeChanged: handleRangeChange,
     zoomEnabled: true,
     animationEnabled: true,
     interactivityEnabled: true,
@@ -44,26 +44,25 @@ const initialOptions = {
 
 const GraphSection = ({ chartData }) => {
     const [options, setOptions] = useState(initialOptions);
-    // const connectionId = useSelector(selectHubConnectionId);
     const viewportMinimum = useSelector(selectViewportMinimum);
     const displayFitErrorCurve = useSelector(selectDisplayFitErrorCurve);
+    const dispatch = useDispatch();
 
-    // const handleRangeChange = (e) => {
-    //     if(e.axisX[0].viewportMinimum !== null && e.axisX[0].viewportMaximum)
-    //     {
-        // const request = createRequestObject(
-        //     'POST',
-        //     'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
-        //     JSON.stringify({ 
-        //                     'connectionId': connectionId,
-        //                     'start': e.axisX[0].viewportMinimum.toString().replace('.',','),
-        //                     'stop': e.axisX[0].viewportMaximum.toString().replace('.',',') }));
-        // return apiCall(request); 
-    //  useEffect(() => {
-    //     let newOptions = {...options};
-    //     newOptions.rangeChanged = handleRangeChange;
-    //     setOptions(newOptions);
-    //  },[connectionId,options])
+    const handleRangeChange = (e) => {
+        let start = e.axisX[0].viewportMinimum;
+        let stop = e.axisX[0].viewportMaximum;
+        if(start !== null && stop !== null) {
+            start = start.toFixed(2);   
+            stop = stop.toFixed(2);  
+            const request = createRequestObject('POST',
+                'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
+                JSON.stringify({ 
+                    'start': start.toString().replace('.',','),
+                    'stop': stop.toString().replace('.',',') }));
+            apiCall(request); 
+            dispatch(setStartStopRange({start: start, stop: stop}));         
+        }
+    }
 
     useEffect(() => {
         let newOptions = {...initialOptions};
@@ -86,8 +85,9 @@ const GraphSection = ({ chartData }) => {
         }
 
         newOptions.data = data;
+        newOptions.rangeChanged = handleRangeChange;
 
-        if(viewportMinimum !== 0){
+        if(viewportMinimum !== 0) {
             newOptions.axisY.viewportMinimum = viewportMinimum;
         }
 

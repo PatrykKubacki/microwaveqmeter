@@ -13,4 +13,5 @@ export type ResultBackend = {
     Bandwidth: number;
     PeakTransmittance: number;
     CenterFrequencyDifference: number;
+    NumberOfPoints: number;
 }

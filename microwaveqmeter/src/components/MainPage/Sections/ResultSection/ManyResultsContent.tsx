@@ -6,6 +6,7 @@ import { selectEmptyResonatorCenterFrequency } from '../../../../store/resonator
 import { selectIsFitErrors } from '../../../../store/chartDataReducer';
 import { useDispatch } from 'react-redux';
 import styles from './ManyResultsContent.module.css';
+import { formatEmptyValue } from '../../../../formatters/formatQFactor';
 import {
    TableContainer,
    Table, 
@@ -54,7 +55,7 @@ const ManyResultsContent: React.FC<ManyModeProps> = ({ results }) => {
                          </TableCell>
                          <TableCell component="th" scope="row">
                             <ColloredSpanIfIsFitError isFitError={isFitError}>
-                                {result.Q_factor}
+                                {formatEmptyValue(result.Q_factor)}
                             </ColloredSpanIfIsFitError>
                          </TableCell>
                          <TableCell>

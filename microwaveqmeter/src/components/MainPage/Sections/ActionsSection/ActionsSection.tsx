@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { 
-    selectStartFrequency,
-    selectStopFrequency,
-    selectPointsOnScreen,
     selectHubConnectionId,
     selectMaximums,
     setViewportMinimum,
 } from '../../../../store/chartDataReducer';
+import {
+    selectStartFrequency,
+    selectStopFrequency,
+    selectPointsOnScreen,
+} from '../../../../store/graphActionsReducer';
 import { selectCurrentResult } from '../../../../store/resultReducer';
 import { Button, TextField, Grid, ButtonGroup, Card, CardContent, Typography } from '@material-ui/core';
 import { MaximumOnChart } from '../../../../types/Chart';
@@ -43,7 +45,7 @@ const ActionsSection: React.FC = () => {
             const request = createRequestObject(
                 'POST',
                 'https://localhost:44353/api/Home/SetStartFrequency',
-                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+                JSON.stringify({ 'value': value }));
             apiCall(request);
         }
 
@@ -56,7 +58,7 @@ const ActionsSection: React.FC = () => {
             const request = createRequestObject(
                 'POST',
                 'https://localhost:44353/api/Home/SetStopFrequency',
-                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+                JSON.stringify({'value': value }));
             apiCall(request);
          }
 
@@ -69,7 +71,7 @@ const ActionsSection: React.FC = () => {
             const request = createRequestObject(
                 'POST',
                 'https://localhost:44353/api/Home/SetPointsOnScreen',
-                JSON.stringify({ 'connectionId': connectionId, 'value': value }));
+                JSON.stringify({ 'value': value }));
             apiCall(request);
          }
 
@@ -80,8 +82,7 @@ const ActionsSection: React.FC = () => {
     const handleUnZoomFull = () => {
         const request = createRequestObject(
             'POST',
-            'https://localhost:44353/api/Home/UnZoomFull',
-            JSON.stringify({ 'connectionId': connectionId }));
+            'https://localhost:44353/api/Home/UnZoomFull');
         apiCall(request);
     }
 
@@ -94,7 +95,6 @@ const ActionsSection: React.FC = () => {
             'POST',
             'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
             JSON.stringify({
-                'connectionId': connectionId,
                 'start': start.toString().replace('.',','),
                 'stop': stop.toString().replace('.',',')
                 }));

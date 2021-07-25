@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SavedResult } from '../../types/SavedResult';
 import SavedResultsHeader  from './SavedResultsHeader';
 import SavedResultsContent from './SavedResultsContent';
@@ -14,37 +14,108 @@ import {
      Grid,
      TextField 
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import { selectCurrentResults } from '../../store/resultReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCurrentResults,
+    setLastSessionsNames,
+    selectLastSessionsNames,
+    setCurrentResultFromSavedSession,
+    selectCurrentSession,
+    setCurrentSession,
+} from '../../store/resultReducer';
 import styles from './SavedResult.module.css';
+import { createRequestObject, apiCall } from '../../apiCall/apiCall';
+import { ErrorSnackBar } from '../Controls/Alerts/ErrorSnackBar';
 
 type Props = {
     items: SavedResult[];
-    savedResulsFilesNames: string[];
 }
 
-const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
-    const [expanded, setExpanded] = React.useState('');
-    const savedResults = useSelector(selectCurrentResults);
+const SavedResults: React.FC<Props> = ({items}) => {
+    const [expanded, setExpanded] = useState('');
+    const [sessionName, setSessionName] = useState('');
+    const [isErrorSnackOpen, setIsErrorSnackOpen] = useState(false);
+    const savedResults: SavedResult[] = useSelector(selectCurrentResults);
+    const lastSessionsNames: string[] = useSelector(selectLastSessionsNames);
+    const currentSession: string = useSelector(selectCurrentSession)
+    const dispatch = useDispatch();
 
     const handleChange = (panel: any) => (event:any, newExpanded:any) => {
       setExpanded(newExpanded ? panel : false);
     };
 
+    const handleSetLastSession = (sessions: object) => {
+        dispatch(setLastSessionsNames(sessions))
+    }
+
+    const handleSaveButton = () => {
+        if(savedResults.length <= 0) {
+            setIsErrorSnackOpen(true);
+            return;
+        }
+
+        let name = '';
+        if(currentSession !== 'New' && sessionName === "") {
+            name = currentSession;
+        } else {
+            name = sessionName !== "" 
+            ? sessionName 
+            : currentSession !== 'New'
+                ? currentSession
+                : `session-${Date.now().toPrecision().toString()}`;   
+        }
+
+        const request = createRequestObject('POST',
+            'https://localhost:44353/api/Home/SaveMeasurements ',
+            JSON.stringify({ 'SessionName': name, 'Measurements': savedResults }),
+            handleSetLastSession);
+        apiCall(request);
+    }
+
+    const handleSetActiveMeasurements = (measurements: object) => {
+        if(measurements !== undefined) {
+            dispatch(setCurrentResultFromSavedSession(measurements));
+        }
+    }
+    const handleSessionChange = (e: React.ChangeEvent<{ name?: string | undefined; value: unknown; }>) => {
+        const session = e.target.value;
+        dispatch(setCurrentSession(session))
+        if(session !== 'New') {
+            const request = createRequestObject('POST',
+                'https://localhost:44353/api/Home/GetSavedMeasurementsSession ',
+            JSON.stringify({ 'SessionName': session }),
+            handleSetActiveMeasurements);
+            apiCall(request);    
+        } else {
+            handleSetActiveMeasurements([]);
+        }
+    }
+
     return (
-        <div> 
+        <div>
+            <ErrorSnackBar isOpen={isErrorSnackOpen} onClose={()=>setIsErrorSnackOpen(false)} message={'No measurements to save'}/> 
             <Grid container spacing={2}>
                 <Grid item xs={3} xl={2}>
                     <TextField label="Session name" 
                                variant="outlined" 
                                size='small'
+                               value={sessionName}
+                               onChange={(e) => setSessionName(e.target.value)}
                                />
                 </Grid>
+                <Grid item xs={2} xl={2}>
+                    <Button variant="contained" 
+                            color="primary" 
+                            size='medium'
+                            onClick={handleSaveButton}>
+                         {'Save'}
+                    </Button>
+                </Grid>
                 <Grid item xs={3} xl={2}>
-                    <InputLabel id="SavedResultsSelectLabel">Archived sessions</InputLabel>
-                    <Select labelId="SavedResultsSelectLabel" id="SavedResultsSelect">
+                    <InputLabel id="SavedResultsSelectLabel">Last sessions</InputLabel>
+                    <Select labelId="SavedResultsSelectLabel" id="SavedResultsSelect" onChange={handleSessionChange} value={currentSession}>
                         <MenuItem value={'New'}>{'New'}</MenuItem>
-                        {savedResulsFilesNames.map(fileName => <MenuItem value={fileName}>{fileName}</MenuItem>)}
+                        {lastSessionsNames.map(fileName => <MenuItem value={fileName}>{fileName}</MenuItem>)}
                     </Select>
                 </Grid>
                 <Grid item xs={4} xl={2}>
@@ -54,7 +125,7 @@ const SavedResults: React.FC<Props> = ({items, savedResulsFilesNames}) => {
                              filename={`Exported_Measurements_${Date.now().toPrecision().toString()}.csv`}>
                          <Button variant="contained" 
                                  color="primary" 
-                                 size='large'>
+                                 size='medium'>
                          {'Export to CSV'}
                         </Button>
                     </CSVLink> 

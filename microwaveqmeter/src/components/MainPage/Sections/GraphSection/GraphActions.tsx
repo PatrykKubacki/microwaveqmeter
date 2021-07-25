@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, ButtonGroup} from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectHubConnectionId, setViewportMinimum, selectMaximums } from '../../../../store/chartDataReducer';
+import { setViewportMinimum, selectMaximums } from '../../../../store/chartDataReducer';
+import { setInitialGrphsActions, initialState as hubParameters, setStartStopRange } from '../../../../store/graphActionsReducer';
 import { selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { ResultBackend } from '../../../../types/Result';
@@ -9,7 +10,6 @@ import { MaximumOnChart } from '../../../../types/Chart';
 import styles from './GraphActions.module.css';
 
 const GraphActions: React.FC = () => {
-    const connectionId: string = useSelector(selectHubConnectionId);
     const activeCurrentResult: ResultBackend = useSelector(selectActiveCurrentResult);
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
     const dispatch = useDispatch();
@@ -17,9 +17,14 @@ const GraphActions: React.FC = () => {
     const handleUnZoomFull = () => {
         const request = createRequestObject(
             'POST',
-            'https://localhost:44353/api/Home/UnZoomFull',
-            JSON.stringify({ 'connectionId': connectionId }));
+            'https://localhost:44353/api/Home/SetHubParameters',
+            JSON.stringify({ 
+                'start': hubParameters.startFrequency.toString(),
+                'stop': hubParameters.stopFrequency.toString(),
+                'points': hubParameters.pointsOnScreen.toString(),
+                 }))
         apiCall(request);
+        dispatch(setInitialGrphsActions());
     }
 
     const handleAutoCenter = () => {
@@ -31,11 +36,11 @@ const GraphActions: React.FC = () => {
             'POST',
             'https://localhost:44353/api/Home/SetStartStopRangeFrequency',
             JSON.stringify({
-                'connectionId': connectionId,
                 'start': start.toString().replace('.',','),
                 'stop': stop.toString().replace('.',',')
                 }));
         apiCall(request);
+        dispatch(setStartStopRange({start: start, stop: stop}));
     }
 
     const handleAutoScale = () => {

@@ -7,3 +7,9 @@ export const formatQFactor = (value: number) => {
         ? Math.round(value * 10) / 10
         : Math.round(value * 100) / 100;
 }
+
+export const formatEmptyValue = (value: number) => {
+    return value === null || value === undefined || value === 0 || isNaN(value)
+       ? '---' 
+       : value.toString();
+}

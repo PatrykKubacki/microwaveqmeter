@@ -20,7 +20,7 @@ const EmptyResonatorSection: React.FC = () => {
 
     const handleGetEmptyResonator = () => {
         const resonator = {
-            qFactor: currentResult.Q_factor,
+            qFactor: !isNaN(currentResult.Q_factor) ? currentResult.Q_factor: 0,
             centerFrequency: currentResult.CenterFrequency,
             peakTransmittance: currentResult.PeakTransmittance
         };
