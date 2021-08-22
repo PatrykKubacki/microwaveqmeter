@@ -12,6 +12,7 @@ import {
     setPeakTransmittance,
     selectEmptyResonator,
 } from '../../../../store/resonatorReducer';
+import styles from './EmptyResonatorSection.module.css';
 
 const EmptyResonatorSection: React.FC = () => {
     const currentResult: ResultBackend = useSelector(selectActiveCurrentResult);
@@ -36,6 +37,7 @@ const EmptyResonatorSection: React.FC = () => {
                                variant="outlined" 
                                size='small'
                                type={'number'}
+                               className={styles.fields}
                                onChange={(e)=> dispatch(setQFactor(e.target.value))}
                                value={emptyResonator.qFactor}/>
                 </Grid>  
@@ -44,6 +46,7 @@ const EmptyResonatorSection: React.FC = () => {
                                variant="outlined" 
                                size='small'
                                type={'number'}
+                               className={styles.fields}
                                onChange={(e)=> dispatch(setCenterFrequency(e.target.value))}
                                value={emptyResonator.centerFrequency}/>
                 </Grid>  
@@ -52,6 +55,7 @@ const EmptyResonatorSection: React.FC = () => {
                                variant="outlined" 
                                size='small'
                                type={'number'}
+                               className={styles.fields}
                                onChange={(e)=> dispatch(setPeakTransmittance(e.target.value))}
                                value={emptyResonator.peakTransmittance}/>
                 </Grid>
@@ -59,6 +63,7 @@ const EmptyResonatorSection: React.FC = () => {
                     <Button variant="contained" 
                             color="primary" 
                             size='large'
+                            className={styles.fields}
                             onClick={handleGetEmptyResonator}
                             >
                         {'Measure the empty resonator'}

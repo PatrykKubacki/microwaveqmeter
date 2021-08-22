@@ -7,6 +7,7 @@ import {
 import { SavedResult } from '../../types/SavedResult';
 import styles from './MainPage.module.css';
 import { Grid } from '@material-ui/core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const savedResults: SavedResult[] = [
     {    
@@ -40,6 +41,8 @@ const savedResults: SavedResult[] = [
 ]
 
 const MainPage: React.FC = () => {
+    const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
+
     return (
         <>
             <br/>
@@ -51,10 +54,10 @@ const MainPage: React.FC = () => {
                         </div>
                     </div>
                 </Grid><br/><br/><br/>
-                    <Grid item xs={4} xl={2}>
+                    <Grid item xs={isTabletOrMobile ? 12: 4} xl={2}>
                         <ResultSection/>
                     </Grid>
-                    <Grid item xs={7} xl={9}>
+                    <Grid item xs={isTabletOrMobile ? 12: 7} xl={9}>
                         <SavedResultsSections savedResults={savedResults}/>
                     </Grid>
             </Grid>

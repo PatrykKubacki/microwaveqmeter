@@ -36,7 +36,7 @@ const ManyResultsContent: React.FC<ManyModeProps> = ({ results }) => {
     }
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={styles.table}>
             <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>

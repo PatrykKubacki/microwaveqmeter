@@ -16,14 +16,18 @@ import {
     Typography
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { saveResult, selectCurrentResult, selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { selectIsAnyFitErrors } from '../../../../store/chartDataReducer';
 import { selectConverterInfo } from '../../../../store/settingsReducer';
 import { selectEmptyResonator } from '../../../../store/resonatorReducer';
 import { ConverterResultMapper } from '../../../../mappers/converterResult';
 import { EmptyResonatorSection } from '../../Sections';
+import { DesktopOnly, MobileOnly } from '../../../MediaQuery';
 
 const ResultSection: React.FC = () => {
+    const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
+
     const [resultName, setResultName] = useState('');
     const [h, setH] = useState('');
 
@@ -83,7 +87,7 @@ const ResultSection: React.FC = () => {
             <CardContent>
              <Typography variant="h6">{'Result'}</Typography>
              {isAnyFitErrors && <Typography className={styles.isFitError} variant="body1">{'Possible fit error'}</Typography>}
-            {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
+            <DesktopOnly>{resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
             <><ResultContent result={resultFromRedux[0]}/>
             </>):(<ManyResultsContent results={resultFromRedux}/>)}
             <br/>
@@ -99,14 +103,14 @@ const ResultSection: React.FC = () => {
                                onChange={(e) => setH(e.target.value)}/>
                     </div>
                 </Grid></Grid>
-                <Grid item xs={9} xl={9}>
+                <Grid item xs={isTabletOrMobile ? 12: 9} xl={9}>
                     <TextField label="Name" 
                                variant="outlined" 
                                size='small'
                                value={resultName}
                                onChange={(e) => setResultName(e.target.value)}/>
                 </Grid>
-                <Grid item xs={3} xl={3}>
+                <Grid item xs={isTabletOrMobile ? 12: 3} xl={3}>
                     <Button variant="contained" 
                             color="primary" 
                             size='large'
@@ -116,6 +120,48 @@ const ResultSection: React.FC = () => {
                 </Grid> 
             </Grid> <br/>
                     <EmptyResonatorSection />
+            </DesktopOnly>
+            <MobileOnly>
+                <Grid container>
+                    <Grid item xs={7}>
+                    {resultFromRedux.length <= 1 || resultFromRedux.length >= 10 ? (
+            <><ResultContent result={resultFromRedux[0]}/>
+            </>):(<div className={styles.fields}><ManyResultsContent results={resultFromRedux}/></div>)}
+            <Grid container>
+                    <Grid item xs={12} xl={12}>
+                    <div className={styles.merginBottom} >
+                        <TextField label="h [mm]" 
+                               variant="outlined"
+                               size='small'
+                               type={'number'}
+                               value={h}
+                               className={styles.fields}
+                               onChange={(e) => setH(e.target.value)}/>
+                    </div>
+                </Grid></Grid>
+                <Grid item xs={12} xl={12}>
+                    <TextField label="Name" 
+                               variant="outlined" 
+                               size='small'
+                               value={resultName}
+                               className={styles.fields}
+                               onChange={(e) => setResultName(e.target.value)}/>
+                </Grid>
+                <Grid item xs={12} xl={12}><br/>
+                    <Button variant="contained" 
+                            color="primary" 
+                            size='large'
+                            className={styles.fields}
+                            onClick={() => handleSaveResultButton()}>
+                        {'Save'}
+                    </Button>
+                </Grid> 
+                    </Grid>
+                    <Grid item xs={5}>
+                        <EmptyResonatorSection />
+                    </Grid>
+                </Grid>
+            </MobileOnly>
             </CardContent>
         </Card>
     )

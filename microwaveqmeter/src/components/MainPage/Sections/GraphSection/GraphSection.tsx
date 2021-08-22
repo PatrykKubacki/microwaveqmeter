@@ -10,6 +10,8 @@ import GraphActions from './GraphActions';
 import GraphSwipeInputs from './GraphSwipeInputs';
 import styles from './GraphSection.module.css';
 import Graph from './Graph';
+import { DesktopOnly, MobileOnly } from '../../../MediaQuery';
+import ActionPanelMobile from '../../../Mobile/ActionPanelMobile/ActionPanelMobile';
 import { useSelector } from 'react-redux';
 import * as SignalR from '@microsoft/signalr';
 
@@ -132,13 +134,18 @@ const GraphSection: React.FC = () => {
 
     return (
     <div>
+        <DesktopOnly>
         <div className={styles.actionPanel}>
             <GraphActions />
             <GraphSwipeInputs />
         </div>
+        </DesktopOnly>
         <div className={styles.graphPanel}>
            <Graph chartData={chartData}/>
         </div>
+        <MobileOnly>
+            <ActionPanelMobile />
+        </MobileOnly>
     </div>)
 }
 

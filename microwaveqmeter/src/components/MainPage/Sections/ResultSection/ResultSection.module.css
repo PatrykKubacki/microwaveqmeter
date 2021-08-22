@@ -5,3 +5,12 @@
 .isFitError {
     color: red;
 }
+
+@media (max-width: 1024px) {
+    .fields {
+        width: 90%;
+    }
+    .xxx {
+        width: 90%;
+    }
+}

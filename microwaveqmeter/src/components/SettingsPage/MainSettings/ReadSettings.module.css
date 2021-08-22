@@ -1,0 +1,21 @@
+.header {
+    margin-top: 0;
+}
+
+.serialPortSelect {
+    width: 30%;
+}
+
+.noiseReductionInputs {
+    width: 25%;
+    margin-right: 16px;
+    display: inline-block;
+}
+
+@media (max-width: 1024px) {
+    .noiseReductionInputs {
+       display: block;
+       width: 50%;
+       margin-bottom: 16px;
+    }
+}

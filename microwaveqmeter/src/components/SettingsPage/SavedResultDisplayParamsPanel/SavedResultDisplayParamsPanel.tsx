@@ -32,23 +32,24 @@ const SavedResultDisplayParamsPanel: React.FC = () => {
     } 
 
     return (
-        <SettingsPanel title={'Diplay settings'} onChange={()=> null}>
-          <div className={styles.tablex}>
-             <TableContainer component={Paper} elevation={3}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Parameter</TableCell>
-                                <TableCell>Display</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {generateRows()}
-                        </TableBody>
-                    </Table>
-                 </TableContainer>
-            </div>
-        </SettingsPanel>
+        <></>
+        // <SettingsPanel title={'Diplay settings'} onChange={()=> null}>
+        //   <div className={styles.tablex}>
+        //      <TableContainer component={Paper} elevation={3}>
+        //             <Table>
+        //                 <TableHead>
+        //                     <TableRow>
+        //                         <TableCell>Parameter</TableCell>
+        //                         <TableCell>Display</TableCell>
+        //                     </TableRow>
+        //                 </TableHead>
+        //                 <TableBody>
+        //                     {generateRows()}
+        //                 </TableBody>
+        //             </Table>
+        //          </TableContainer>
+        //     </div>
+        // </SettingsPanel>
     )
 }
 

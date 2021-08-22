@@ -1,11 +1,14 @@
 import React from 'react';
-// import SavedResultDisplayParamsPanel from './SavedResultDisplayParamsPanel/SavedResultDisplayParamsPanel';
+import { MainSettings } from './MainSettings/MainSettings';
+import { ConverterSettings } from './ConverterSettings/ConverterSettings';
 
 const SettingsPage: React.FC = () => {
     return (
         <>
-            <h1>Settings Page Header</h1>
-            {/* <SavedResultDisplayParamsPanel /> */}
+            <h1>Settings</h1>
+            <MainSettings />
+            <br/>
+            <ConverterSettings />
         </>
     )
 }

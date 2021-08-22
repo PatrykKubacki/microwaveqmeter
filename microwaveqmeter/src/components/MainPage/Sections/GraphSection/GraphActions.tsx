@@ -7,9 +7,11 @@ import { selectActiveCurrentResult } from '../../../../store/resultReducer';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { ResultBackend } from '../../../../types/Result';
 import { MaximumOnChart } from '../../../../types/Chart';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import styles from './GraphActions.module.css';
 
 const GraphActions: React.FC = () => {
+    const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
     const activeCurrentResult: ResultBackend = useSelector(selectActiveCurrentResult);
     const maximums: MaximumOnChart[] = useSelector(selectMaximums);
     const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const GraphActions: React.FC = () => {
     }
 
     return (
-        <ButtonGroup className={styles.buttonsGroup}  color="primary" size="small">
+        <ButtonGroup className={styles.buttonsGroup} color="primary" size={isTabletOrMobile ? 'large' : 'small'} orientation={isTabletOrMobile ? 'vertical' : 'horizontal'}>
             <Button onClick={handleAutoCenter}>
                 {'Autocenter'}
             </Button>

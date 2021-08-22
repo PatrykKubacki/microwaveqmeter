@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField, Checkbox, FormControlLabel } from '@material-ui/core';
 import { createRequestObject, apiCall } from '../../../../apiCall/apiCall';
 import { useSelector, useDispatch } from 'react-redux';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { 
   selectDisplayFitErrorCurve,
   setDisplayFitErrorCurve
@@ -15,8 +16,10 @@ import {
   setPointsOnScreen,
 } from '../../../../store/graphActionsReducer';
 import styles from './GraphSwipeInputs.module.css';
+import { Grid } from '@material-ui/core';
 
 const GraphSwipeInputs: React.FC = () => {
+    const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
     const startFrequency: number = useSelector(selectStartFrequency);
     const stopFrequency: number = useSelector(selectStopFrequency);
     const pointsOnScreen: number = useSelector(selectPointsOnScreen);
@@ -57,6 +60,47 @@ const GraphSwipeInputs: React.FC = () => {
     }
 
     return ( 
+      isTabletOrMobile ? (
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <FormControlLabel label="Fit error curve" 
+                               control={<Checkbox checked={displayFitErrorCurve}
+                                                  onChange={handleDisplayFitErrorCurveChange}
+                                                  name="checkedB"
+                                                  color="primary" />}/>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField label="Start [Mhz]" 
+                       variant="outlined" 
+                       size='small'
+                       onChange={(e) => dispatch(setStartFrequency(e.target.value))}
+                       onBlur={handleStartFrequencyOnBlur}
+                       value={startFrequency}
+                       className={styles.textFields}
+                       type={'number'}/>
+            </Grid>
+            <Grid item xs={12}>
+            <TextField label="Stop [Mhz]" 
+                       variant="outlined" 
+                       size='small'
+                       onChange={(e) => dispatch(setStopFrequency(e.target.value))}
+                       onBlur={handleStopFrequencyOnBlur}
+                       value={stopFrequency}
+                       className={styles.textFields}
+                       type={'number'}/>
+            </Grid>
+              <Grid item xs={12}>
+              <TextField label="Points on screen" 
+                       variant="outlined" 
+                       size='small'
+                       onChange={(e) => dispatch(setPointsOnScreen(e.target.value))}
+                       onBlur={handlePointsOnScreenOnBlur}
+                       value={pointsOnScreen}
+                       className={styles.textFields}
+                       type={'number'}/>
+              </Grid>
+        </Grid>
+      ) : (
         <div className={styles.self}>
              <FormControlLabel label="Fit error curve" 
                                control={<Checkbox checked={displayFitErrorCurve}
@@ -89,6 +133,7 @@ const GraphSwipeInputs: React.FC = () => {
                        className={styles.textFields}
                        type={'number'}/>
     </div>
+    )
     );
 }
 

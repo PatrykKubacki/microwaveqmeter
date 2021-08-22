@@ -9,3 +9,17 @@
     padding-top: 16px;
     margin-bottom: 16px;
 }
+
+.saveButton {
+    margin-right: 8px;
+    display: inline;
+}
+
+.mobileButton {
+    width: 90%;
+}
+
+.mobileButtonMargin {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
